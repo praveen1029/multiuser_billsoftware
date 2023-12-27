@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>Multiuser Billing Software Vat</title>
+</head>
+
+<style>
+    #welcome{
+        padding-top: 10%;
+        padding-bottom: 12%;
+        background-color: #8e44ad;
+    }
+
+    .logo-text {
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: black; 
+    }
+
+    .nav-link{
+        font-size: larger;
+    }
+
+    .navbar-nav .nav-item.active a{
+        background-color: #8e44ad;
+        padding-left: 3vh;
+        padding-right: 3vh;
+    }
+
+    .navbar-nav .nav-item a{
+        padding: 2vh;
+        margin-right: 7vh;
+        border-radius: 1vh;
+    }
+
+    body::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+    }
+
+    form {
+        width: 100%;
+        position: relative;
+        z-index: 9;
+        padding: 77px 61px 66px;
+        background: #fff;
+ }
+
+        .form-holder {
+  position: relative;
+  margin-bottom: 21px; }
+
+
+
+
+.form-control {
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+  display: block;
+  width: 100%;
+  height: 38px;
+  background: none;
+  padding: 3px 42px 0px;
+  color: #666;
+  font-size: 16px; }
+
+
+    #register {
+  border: none;
+  width: 100%;
+  height: 49px;
+  margin-top: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: #99ccff;
+  color: #fff;
+  text-transform: uppercase;
+  font-family: "Muli-SemiBold";
+  font-size: 15px;
+  letter-spacing: 2px;
+  transition: all 0.5s;
+  position: relative;
+  overflow: hidden; 
+}
+
+.woman_arrow{
+    transform: rotate(-10deg);
+    margin-left: -70%;
+    margin-top: 60%;
+}
+
+</style>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top fixed-top" style="border-radius: 1px solid black;">
+    <a class="navbar-brand" href="#">
+        <span class="logo-text">
+            Multiuser Billing <br> Software Vat
+        </span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="#" style="color: white; margin-left: 5vh;">Home </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" style="color: black;">About</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" style="color: black;">Services</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" style="color: black;">Contact</a>
+        </li>
+        </ul>
+    </div>
+    </nav>
+
+    <section id="welcome">
+        <div class="container">
+            <div class="row d-flex align-items-center">
+            <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light" data-aos="fade-right">
+            </div>
+
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+                <div class="position-relative" style="z-index: 99;">
+                    <div class="position-absolute" class="women_arrow_div">
+                      <img src="{% static 'img/woman_arrow.png' %}" class="woman_arrow" draggable="false" alt=""> 
+                   </div>
+                </div>
+                <div class="row">
+                    <form action="">
+                        <h3 class="text-center">New Account?</h3>
+                        <div class="form-holder">
+                            <span class="lnr lnr-user"></span>
+                            <input type="text" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-phone-handset"></span>
+                            <input type="text" class="form-control" placeholder="Phone Number">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-envelope"></span>
+                            <input type="text" class="form-control" placeholder="Mail">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-lock"></span>
+                            <input type="password" class="form-control" placeholder="Password">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-lock"></span>
+                            <input type="password" class="form-control" placeholder="Confirm Password">
+                        </div>
+                        <button id="register">
+                            <span>Register</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+          </div>
+        </div>
+    </section>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>
