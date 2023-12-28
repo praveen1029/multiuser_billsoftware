@@ -57,7 +57,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-            <a class="nav-link" href="#" style="color: white; margin-left: 5vh;">Home </a>
+            <a class="nav-link" href="{% url 'home' %}" style="color: white; margin-left: 5vh;">Home </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#" style="color: black;">About</a>
@@ -69,7 +69,7 @@
             <a class="nav-link" href="#" style="color: black;">Contact</a>
         </li>
         </ul>
-        <a class="btn btn-outline-success my-2 my-sm-0" href="{% url 'register' %}" type="button">Register</a>
+        <a class="btn my-2 my-sm-0" href="{% url 'login' %}" type="button" style="border: 2px solid #8e44ad; border-radius: 2vh;">Register</a>
     </div>
     </nav>
 

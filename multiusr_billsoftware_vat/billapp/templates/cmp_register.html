@@ -11,7 +11,7 @@
 <style>
     #welcome{
         padding-top: 10%;
-        padding-bottom: 2.2%;
+        padding-bottom: 12%;
         background-color: #8e44ad;
     }
 
@@ -89,13 +89,10 @@
   overflow: hidden; 
 }
 
-.man_arrow{
-    margin-left: 85%;
-    margin-top: -90%;
-}
-
-a{
-    text-decoration: none;
+.woman_arrow{
+    transform: rotate(-10deg);
+    margin-left: -70%;
+    margin-top: 60%;
 }
 
 </style>
@@ -136,48 +133,66 @@ a{
             </div>
 
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+                <div class="position-relative" style="z-index: 99;">
+                    <div class="position-absolute" class="women_arrow_div">
+                      <img src="{% static 'img/woman_arrow.png' %}" class="woman_arrow" draggable="false" alt=""> 
+                   </div>
+                </div>
                 <div class="row">
-                    <form action="{% url 'user_login' %}" method="post">
+                    <form method="post" action="{% url 'register_company' %}">
                         {% csrf_token %}
-                        <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Login</h3>
+                        <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Register Company</h3>
                         <br>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="email" class="form-control" name="email" placeholder="email">
+                            <input type="text" class="form-control" name="fname" placeholder="First Name">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-user"></span>
+                            <input type="text" class="form-control" name="lname" placeholder="Last Name">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-envelope"></span>
+                            <input type="text" class="form-control" name="email" placeholder="Mail">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-user"></span>
+                            <input type="text" class="form-control" name="uname" placeholder="Username">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-phone-handset"></span>
+                            <input type="text" class="form-control" name="phno" placeholder="Phone Number">
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
                             <input type="password" class="form-control" name="pass" placeholder="Password">
                         </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-lock"></span>
+                            <input type="password" class="form-control" name="cpass" placeholder="Confirm Password">
+                        </div>
+                        <div class="form-holder">
+                            <span class="lnr lnr-lock"></span>
+                            <input type="file" class="form-control" name="rfile" placeholder="Enter Required Files">
+                        </div>
                         <button id="register">
-                            <span>Login</span>
+                            <span>Next</span>
                         </button>
-                        <br>
-                        <h6 class="text-center"><a href="">Forgot Password</a></h6>
                     </form>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-md-3"></div>
                     <div class="col-md-6 text-center">
-                        <b class="text-white">New Here ?</b>
+                        <b class="text-white">Already have an Account ?</b>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-4">
-                        <a href="{% url 'cmp_register' %}" class="btn btn-danger" style="width:25vh">Register a Company</a>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <a href="{% url 'login' %}" class="btn btn-danger" style="width:35vh">Login</a>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-4">
-                        <a href="{% url 'emp_register' %}" class="btn btn-success" style="width:25vh">Register as a Staff</a>
-                    </div>
-                </div>
-                <div class="position-relative" style="z-index: 99;">
-                    <div class="position-absolute" class="man_arrow_div">
-                      <img src="{% static 'img/man_arrow.png' %}" class="man_arrow" draggable="false" alt="" width="75%"> 
-                   </div>
                 </div>
             </div>
           </div>
