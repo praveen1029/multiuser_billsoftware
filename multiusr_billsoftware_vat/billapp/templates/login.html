@@ -129,6 +129,7 @@ a{
     </div>
     </nav>
 
+
     <section id="welcome">
         <div class="container">
             <div class="row d-flex align-items-center">
@@ -139,21 +140,29 @@ a{
                 <div class="row">
                     <form action="{% url 'user_login' %}" method="post">
                         {% csrf_token %}
+                        
                         <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Login</h3>
+                        {% for message in messages %}
+                        <h5>
+                            <div class="alert alert-danger mt-5 message text-center">
+                                {{ message }}
+                            </div>
+                        </h5>
+                        {% endfor %}
                         <br>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="email" class="form-control" name="email" placeholder="email">
+                            <input type="email" class="form-control" name="email" placeholder="email" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
-                            <input type="password" class="form-control" name="pass" placeholder="Password">
+                            <input type="password" class="form-control" name="pass" placeholder="Password" required>
                         </div>
                         <button id="register">
                             <span>Login</span>
                         </button>
                         <br>
-                        <h6 class="text-center"><a href="">Forgot Password</a></h6>
+                        <h6 class="text-center"><a href="{% url 'forgot_password' %}">Forgot Password</a></h6>
                     </form>
                 </div>
                 <br>

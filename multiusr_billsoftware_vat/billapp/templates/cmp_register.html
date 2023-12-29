@@ -139,37 +139,44 @@
                    </div>
                 </div>
                 <div class="row">
-                    <form method="post" action="{% url 'register_company' %}">
+                    <form method="post" action="{% url 'register_company' %}" onsubmit="return validate()">
                         {% csrf_token %}
                         <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Register Company</h3>
+                        {% for message in messages %}
+                        <h5>
+                            <div class="alert alert-danger mt-5 message text-center">
+                                {{ message }}
+                            </div>
+                        </h5>
+                        {% endfor %}
                         <br>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="text" class="form-control" name="fname" placeholder="First Name">
+                            <input type="text" class="form-control" name="fname" placeholder="First Name" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="text" class="form-control" name="lname" placeholder="Last Name">
+                            <input type="text" class="form-control" name="lname" placeholder="Last Name" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-envelope"></span>
-                            <input type="text" class="form-control" name="email" placeholder="Mail">
+                            <input type="text" class="form-control" name="email" placeholder="Mail" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="text" class="form-control" name="uname" placeholder="Username">
+                            <input type="text" class="form-control" name="uname" placeholder="Username" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-phone-handset"></span>
-                            <input type="text" class="form-control" name="phno" placeholder="Phone Number">
+                            <input type="text" class="form-control" name="phno" placeholder="Phone Number" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
-                            <input type="password" class="form-control" name="pass" placeholder="Password">
+                            <input type="password" class="form-control" name="pass" id="pass" placeholder="Password" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
-                            <input type="password" class="form-control" name="cpass" placeholder="Confirm Password">
+                            <input type="password" class="form-control" name="cpass" id="cpass" placeholder="Confirm Password" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
@@ -198,6 +205,23 @@
           </div>
         </div>
     </section>
+
+    <script>
+        function validate() {
+            var pass = document.getElementById("pass").value;
+            var cpass = document.getElementById("cpass").value;
+    
+            if (pass.length < 8 || pass.length > 18) {
+                alert("Password length is invalid");
+                return false;
+            }
+            if (pass != cpass) {
+                alert("password and confirm password does not match");
+                return false;
+            }
+            return true;
+        }
+    </script>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

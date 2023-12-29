@@ -145,7 +145,6 @@
                         <div class="form-group ">
                             {% csrf_token %}
 
-
                             <input type="text" id="cname" name="cname" class="form-control"
                                 placeholder="Enter company name" required><br>
 
@@ -174,7 +173,7 @@
 
 
                             <select class="form-control mt-4 mb-4" name="gsttype" id="gsttype"
-                                onclick="hidinput(this), disinput(this) ,disinput2(this)">
+                                onclick="hidinput(this), disinput(this) ,disinput2(this)" required>
                                 <option selected hidden value="">Select GST Type</option>
                                 <option value="Registered Business - Regular"> Registered Business - Regular </option>
                                 <option value="Registered Business - Composition"> Registered Business - Composition </option>
@@ -260,52 +259,7 @@
 
             });
         });
-
-
-
-
-        // function buydate(){
-        //     const date = new Date();
-
-        //     const select = document.getElementById('select').value;
-        //     for (let i=0; i<terms.length; i++){
-
-        //         if(terms[i].id == select){
-        //             date.setDate(date.getDate()+terms[i].days);
-
-        //             document.getElementById('end').value = date.toJSON().slice(0,10);
-
-        //         }
-
-        //     }
-
-        // if( select == 'One Month' ){
-        //     date.setDate(date.getDate()+30);
-
-        //    document.getElementById('end').value = date.toJSON().slice(0,10);
-        // }
-        // if( select == 'Six Month' ){
-        //     date.setDate(date.getDate()+180);
-
-        //    document.getElementById('end').value = date.toJSON().slice(0,10);
-        // }
-        // if( select == 'One Year' ){
-        //     date.setDate(date.getDate()+360);
-
-        //    document.getElementById('end').value = date.toJSON().slice(0,10);
-        // }
-        // if( select == 'Two Year' ){
-        //     date.setDate(date.getDate()+720);
-
-        //    document.getElementById('end').value = date.toJSON().slice(0,10);
-        // }
-        // if( select == 'Five Year' ){
-        //     date.setDate(date.getDate()+1800);
-
-        //    document.getElementById('end').value = date.toJSON().slice(0,10);
-        // }
-        //   }
-
+  
     </script>
 
 </body>
