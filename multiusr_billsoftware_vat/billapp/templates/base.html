@@ -104,7 +104,7 @@
               </li>
   
               <li class="sidebar-item">
-                <a class="sidebar-link mt-2" href="" aria-expanded="false"
+                <a class="sidebar-link mt-2" href="{% url 'item_list' %}" aria-expanded="false"
                   style="color: black;background-color: rgb(210, 235, 241,0.5);">
                   <span class="hide-menu"><b>Items</b></span>
                 </a>
@@ -198,12 +198,12 @@
               <li class="nav-item dropdown">
                 <a class="nav-link nav-icon-hover" href="" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
-                  <!-- {% if company.profile_pic %}
+                  {% if company.profile_pic %}
                   <img width="35" height="35" class="rounded-circle" src="{{ company.profile_pic.url }}" alt="">
                   {% else %}
-                  <img src="{% static 'assets/images/profile/user-1.jpg' %}" alt="" width="35" height="35"
+                  <img src="{% static 'img/default/profile-pic.png' %}" alt="" width="35" height="35"
                     class="rounded-circle">
-                  {% endif %} -->
+                  {% endif %}
 
                   <h5 class="h5" style="font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
                     <b>{{company.company_name}}</b></h5>
@@ -212,7 +212,7 @@
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                   <div class="message-body">
                     {% if usr.is_company == True %}
-                    <a href="{% url 'load_cmp_profile' %}" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="{% url 'cmp_profile' %}" class="d-flex align-items-center gap-2 dropdown-item">
                       <i class="ti ti-user fs-6"></i>
                       <p class="mb-0 fs-3">Profile</p>
                     </a>

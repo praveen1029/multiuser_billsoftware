@@ -6,6 +6,7 @@ from django.utils.crypto import get_random_string
 import random
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils import timezone
 
 def home(request):
   return render(request, 'home.html')
@@ -182,5 +183,57 @@ def change_password(request):
       messages.info(request,'Password reset mail sent !!')
       return redirect('forgot_password')
 
-def load_cmp_profile(request):
-  return render(request,'cmp_profile.html')
+def cmp_profile(request):
+  usr = request.user
+  cmp = company.objects.get(user=usr)
+  context = {'usr' : usr, 'cmp' : cmp}
+  return render(request,'cmp_profile.html',context)
+
+def load_edit_cmp_profile(request):
+  usr = request.user
+  cmp = company.objects.get(user=usr)
+  context = {'usr' : usr, 'cmp' : cmp}
+  return render(request,'edit_cmp_profile.html',context)
+
+
+def edit_cmp_profile(request):
+  cmp =  company.objects.get(user = request.user)
+  if request.method == 'POST':
+    email = request.POST['email']
+    current_email = cmp.user.email
+    if email != current_email:
+      CustomUser.objects.filter(email=email).exists()
+      messages.info(request,'Email Already in Use')
+      return redirect('load_edit_cmp_profile')
+
+    cmp.company_name = request.POST['cname']
+    cmp.user.email = request.POST['email']
+    cmp.user.first_name = request.POST['fname']
+    cmp.user.last_name = request.POST['lname']
+    cmp.contact = request.POST['phno']
+    cmp.address = request.POST['address']
+    cmp.city = request.POST['city']
+    cmp.state = request.POST['state']
+    cmp.country = request.POST['country']
+    cmp.pincode = request.POST['pincode']
+    cmp.pan_number = request.POST['pan']
+    cmp.gst_type = request.POST['gsttype']
+    cmp.gst_no = request.POST['gstnoval']
+    old=cmp.profile_pic
+    new=request.FILES.get('image')
+    if old!=None and new==None:
+      cmp.profile_pic=old
+    else:
+      cmp.profile_pic=new
+    
+    cmp.save() 
+    cmp.user.save() 
+    return redirect('cmp_profile') 
+
+
+def item_list(request):
+  return render(request,'item_list.html')
+
+def load_item_create(request):
+  tod = timezone.now().date().strftime("%Y-%m-%d")
+  return render(request,'item_create.html',{'tod':tod})
