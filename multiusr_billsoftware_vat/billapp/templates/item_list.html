@@ -35,7 +35,7 @@
     }
 </style>
 
-
+{% if itm %}
 <div class="body-wrapper">
     <br><br><br><br><br><br>
     <div class="row ps-3 pe-3 m-0">
@@ -115,12 +115,12 @@
                         </div>
                         {% endif %}
                     </div>
-                   
+                
                 </div>
             </div>
         </div>
         <div class="col-sm-12 col-lg-9  ps-2 pe-3" style="height: 80%;">
-          <div id="item_get_detail_target">
+        <div id="item_get_detail_target">
             <div class="row m-0" style="height:20%">
                 <div class="card bg-light bs p-3 mb-3">
                     <div class="d-flex justify-content-between">
@@ -201,12 +201,12 @@
                                                             <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                          <li><button type="button" data-bs-toggle="modal" data-bs-target="#myModal2" class="dropdown-item fw-bold tb hide_table_text_v" 
+                                                        <li><button type="button" data-bs-toggle="modal" data-bs-target="#myModal2" class="dropdown-item fw-bold tb hide_table_text_v" 
                                                             hx-get="{% url 'item_transaction_view_or_edit' first_item.id i.id %}"
                                                             hx-trigger="click delay:0s"
                                                             hx-target="#item_transaction_view_or_edit_target"
                                                             ><span class="fa fa-eye pe-2 tg"></span> View / Edit</button></li>
-                                                          <li><button type="button" onclick="delete_transaction({{ i.id }})" class="dropdown-item fw-bold tb hide_table_text_d" href=""><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</button></li>
+                                                        <li><button type="button" onclick="delete_transaction({{ i.id }})" class="dropdown-item fw-bold tb hide_table_text_d" href=""><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</button></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -218,10 +218,44 @@
                     </div>
                 </div>
             </div>
-          </div>
+        </div>
         </div>
     </div>
 </div>
+
+{% else %}
+<div class="body-wrapper ">
+    <br><br><br><br><br><br>
+    <div class="p-5 text-center" style="display: flex;justify-content: center;">
+        <div class="card " style="background-color: white;width:50rem;box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.249);">
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <img height="500vw" src="{% static 'img/item-empty.jpg' %}" class="card-img" alt="no img">
+                    <!-- <div class="card-img-overlay">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small>Last updated 3 mins ago</small></p>
+                    </div> -->
+                </div>
+                <div class="col-sm-12 col-md-6 ps-4 pe-4">
+                    <div class="p-1 rounded" style="border: 1px solid rgba(0, 0, 0, 0);border-bottom: none;">
+                        <p style="margin-bottom: 4rem;"></p>
+                        <p></p>
+                        <h1 style="font-weight:900;color:rgba(0, 0, 0, 0.644);font-size: 1.5rem;">MULTIUSER BILLING SOFTWARE</h1>
+                        <!-- <h5 class="card-title">Card title</h5> -->
+                        <p style="margin-bottom: 1.5rem;"></p>
+                        <p class="card-text">Welcome to Multiuser Billing Software, We're committed to providing a seamless and secure online marketplace for buyers and sellers. Our platform offers a range of features.</p>
+                        <p style="color: rgb(0, 89, 10);font-weight: light;" class="card-text">You can manage all you items here.</p>
+                        <p class="mt-4"></p>
+                        <a class="btn btn-lg btn-info btn-gradient" href="{% url 'load_item_create' %}">Add Your First Item</a>
+                        <p style="margin-bottom: 4rem;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %} 
 
 <script>
     function exportToExcel() {

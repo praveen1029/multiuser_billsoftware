@@ -54,7 +54,7 @@ def register_company(request):
       elif not CustomUser.objects.filter(email = email).exists():
         user_data = CustomUser.objects.create_user(first_name = fname, last_name = lname, username = uname, email = email, password = passw, is_company = 1)
 
-        cmp = company( contact = phno, user = user_data, profile_pic = rfile)
+        cmp = Company( contact = phno, user = user_data, profile_pic = rfile)
         cmp.save()
         return redirect('cmp_details',user_data.id)
 
@@ -80,7 +80,7 @@ def register_company_details(request,id):
     code=get_random_string(length=6)
 
     usr = CustomUser.objects.get(id = id)
-    cust = company.objects.get(user = usr)
+    cust = Company.objects.get(user = usr)
     cust.company_name = cname
     cust.address = address
     cust.city = city
@@ -107,11 +107,11 @@ def register_employee(request):
     ccode = request.POST['ccode']
     rfile = request.FILES.get('rfile')
 
-    if not company.objects.filter(company_code = ccode).exists():
+    if not Company.objects.filter(company_code = ccode).exists():
       messages.info(request, 'Sorry, Company Code is Invalid !!')
       return redirect('emp_register')
     
-    emp_names = employee.objects.filter(company_code = ccode).values_list('user',flat=True)
+    emp_names = Employee.objects.filter(company_code = ccode).values_list('user',flat=True)
     for e in emp_names:
        usr = CustomUser.objects.get(id=e)
        if str(fname).lower() == (usr.first_name ).lower() and str(lname).lower() == (usr.last_name).lower():
@@ -125,7 +125,7 @@ def register_employee(request):
 
       elif not CustomUser.objects.filter(email = email).exists():
         user_data = CustomUser.objects.create_user(first_name = fname, last_name = lname, username = uname, email = email, password = passw)
-        emp = employee(user = user_data, profile_pic = rfile, company_code=ccode, contact=phno)
+        emp = Employee(user = user_data, profile_pic = rfile, company_code=ccode, contact=phno)
         emp.save()
         return redirect('login')
 
@@ -148,7 +148,7 @@ def user_login(request):
           auth.login(request, log_user)
           return redirect('dashboard')
         else:
-          emp = employee.objects.get(user=usr)
+          emp = Employee.objects.get(user=usr)
           if emp.is_approved == 0:
             messages.info(request,'Employee is not Approved !!')
             return redirect('login')
@@ -185,26 +185,26 @@ def change_password(request):
 
 def cmp_profile(request):
   usr = request.user
-  cmp = company.objects.get(user=usr)
+  cmp = Company.objects.get(user=usr)
   context = {'usr' : usr, 'cmp' : cmp}
   return render(request,'cmp_profile.html',context)
 
 def load_edit_cmp_profile(request):
   usr = request.user
-  cmp = company.objects.get(user=usr)
+  cmp = Company.objects.get(user=usr)
   context = {'usr' : usr, 'cmp' : cmp}
-  return render(request,'edit_cmp_profile.html',context)
+  return render(request,'cmp_profile_edit.html',context)
 
 
 def edit_cmp_profile(request):
-  cmp =  company.objects.get(user = request.user)
+  cmp =  Company.objects.get(user = request.user)
   if request.method == 'POST':
     email = request.POST['email']
     current_email = cmp.user.email
     if email != current_email:
-      CustomUser.objects.filter(email=email).exists()
-      messages.info(request,'Email Already in Use')
-      return redirect('load_edit_cmp_profile')
+      if CustomUser.objects.filter(email=email).exists():
+        messages.info(request,'Email Already in Use')
+        return redirect('load_edit_cmp_profile')
 
     cmp.company_name = request.POST['cname']
     cmp.user.email = request.POST['email']
@@ -229,11 +229,94 @@ def edit_cmp_profile(request):
     cmp.save() 
     cmp.user.save() 
     return redirect('cmp_profile') 
+  
+def emp_profile(request):
+  usr = request.user.id
+  emp = Employee.objects.get(user=usr)
+  cmp = Company.objects.get(company_code = emp.company_code)
+  context = {'usr' : usr, 'emp' : emp, 'cmp':cmp}
+  return render(request,'emp_profile.html',context)
+
+def load_edit_emp_profile(request):
+  usr = request.user
+  emp = Employee.objects.get(user=usr)
+  cmp = Company.objects.get(company_code = emp.company_code)
+  context = {'usr' : usr, 'emp' : emp, 'cmp':cmp}
+  return render(request,'emp_profile_edit.html',context)
+
+def edit_emp_profile(request):
+  emp =  Employee.objects.get(user = request.user)
+  if request.method == 'POST':
+    email = request.POST['email']
+    current_email = emp.user.email
+    if email != current_email:
+      if CustomUser.objects.filter(email=email).exists():
+        messages.info(request,'Email Already in Use')
+        return redirect('load_edit_emp_profile')
+
+    emp.user.email = request.POST['email']
+    emp.user.first_name = request.POST['fname']
+    emp.user.last_name = request.POST['lname']
+    emp.contact = request.POST['phno']
+    old=emp.profile_pic
+    new=request.FILES.get('image')
+    if old!=None and new==None:
+      emp.profile_pic=old
+    else:
+      emp.profile_pic=new
+    
+    emp.save() 
+    emp.user.save() 
+    return redirect('emp_profile') 
 
 
 def item_list(request):
-  return render(request,'item_list.html')
+  itm = Item.objects.filter(user=request.user)
+  context = {'itm' : itm}
+  return render(request,'item_list.html',context)
 
 def load_item_create(request):
   tod = timezone.now().date().strftime("%Y-%m-%d")
   return render(request,'item_create.html',{'tod':tod})
+
+def item_create(request):
+  if request.method=='POST':
+    itm_type = request.POST.get('itm_type')
+    if itm_type:
+      type = 'Service'
+    else:
+      type = 'Goods'
+
+    itm_name = request.POST.get('name')
+    itm_hsn = request.POST.get('hsn')
+    itm_unit = request.POST.get('unit')
+    itm_vat = request.POST.get('vat')
+    taxable_result = request.POST.get('taxable_result')
+    itm_sale_price = request.POST.get('sale_price')
+    itm_purchase_price = request.POST.get('purchase_price')
+    stock_in_hand = request.POST.get('stock_in_hand')
+    if stock_in_hand == '' or None :
+      stock_in_hand = 0
+    itm_at_price = request.POST.get('at_price')
+    if itm_at_price == '' or None:
+      itm_at_price = 0
+    itm_date = request.POST.get('itm_date')
+    
+    item = Item(user = request.user,
+                itm_type = type,
+                itm_name = itm_name,
+                itm_hsn = itm_hsn,
+                itm_unit = itm_unit,
+                itm_vat = itm_vat,
+                itm_taxable = taxable_result,
+                itm_sale_price = itm_sale_price,
+                itm_purchase_price = itm_purchase_price,
+                itm_stock_in_hand = stock_in_hand,
+                itm_at_price = itm_at_price,
+                itm_date = itm_date)
+    item.save()
+
+    if request.POST.get('save_and_next'):
+      return redirect('load_item_create')
+    elif request.POST.get('save'):
+      return redirect('item_list')

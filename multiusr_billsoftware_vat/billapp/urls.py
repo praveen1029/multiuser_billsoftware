@@ -21,7 +21,11 @@ urlpatterns = [
     path('cmp_profile/',views.cmp_profile,name='cmp_profile'),  
     path('load_edit_cmp_profile/',views.load_edit_cmp_profile,name='load_edit_cmp_profile'),  
     path('edit_cmp_profile',views.edit_cmp_profile,name='edit_cmp_profile'),  
+    path('emp_profile/',views.emp_profile,name='emp_profile'),  
+    path('load_edit_emp_profile/',views.load_edit_emp_profile,name='load_edit_emp_profile'),  
+    path('edit_emp_profile',views.edit_emp_profile,name='edit_emp_profile'),  
     path('item_list/',views.item_list,name='item_list'),  
     path('load_item_create/',views.load_item_create,name='load_item_create'),  
+    path('item_create',views.item_create,name='item_create'),  
 
 ]

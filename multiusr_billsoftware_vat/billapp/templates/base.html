@@ -65,7 +65,7 @@
           <ul id="sidebarnav ">
 
             <li class="sidebar-item mt-3">
-              <a class="sidebar-link " href="" aria-expanded="false"
+              <a class="sidebar-link " href="{% url 'dashboard' %}" aria-expanded="false"
                 style="text-decoration: none; color: black; background-color: rgb(210, 235, 241,0.5);">
                 <span class="hide-menu"><b>Dashboard</b></span>
               </a>
@@ -74,18 +74,18 @@
             <li class="sidebar-item">
               <button class="btn dropdown-btn" style="margin-top: 10px; border: none;outline: none; color: black;background-color: rgb(210, 235, 241,0.5);width: 100%;text-align: left;">
                 <div class="d-flex justify-content-between">
-                    <b>Employees </b>
+                    <b>Staff </b>
                     <i class="fa fa-caret-down" ></i>
                 </div>
                 
               </button>
               <div class="dropdown-container" style="background-color: aliceblue;padding: 20px;justify-content: center;">
                 <a href="" class="d-flex align-items-center gap-2 dropdown-item">
-                  <p class="mb-0 fs-3">Request Employees</b>
+                  <p class="mb-0 fs-3">Staff Request</b>
                 </a>
                 <hr>
                 <a href="" class="d-flex align-items-center gap-2 dropdown-item">
-                  <p class="mb-0 fs-3">All Employees</p>
+                  <p class="mb-0 fs-3">All Staff</p>
                 </a>
                 <hr>
                 
@@ -201,7 +201,7 @@
                   {% if company.profile_pic %}
                   <img width="35" height="35" class="rounded-circle" src="{{ company.profile_pic.url }}" alt="">
                   {% else %}
-                  <img src="{% static 'img/default/profile-pic.png' %}" alt="" width="35" height="35"
+                  <img src="{% static 'img/profile-pic.png' %}" alt="" width="35" height="35"
                     class="rounded-circle">
                   {% endif %}
 
@@ -217,7 +217,7 @@
                       <p class="mb-0 fs-3">Profile</p>
                     </a>
                     {% else %}
-                    <a href="" class="d-flex align-items-center gap-2 dropdown-item">
+                    <a href="{% url 'emp_profile' %}" class="d-flex align-items-center gap-2 dropdown-item">
                         <i class="ti ti-user fs-6"></i>
                         <p class="mb-0 fs-3">Profile</p>
                     </a>
