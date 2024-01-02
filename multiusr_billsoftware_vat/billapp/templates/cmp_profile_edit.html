@@ -81,7 +81,7 @@
                                     {% if cmp.profile_pic %}
                                     <img class="rounded-circle" src="{{ cmp.profile_pic.url }}" alt="" style="width: 50%; margin-left: 27.5%;  cursor: pointer;" onchange="updateImage(event)">
                                     {% else %}
-                                    <img src="{% static 'img/default/profile-pic.png' %}" alt="" class="rounded-circle" style="width: 50%; margin-left: 27.5%; object-fit: cover; cursor: pointer;" onchange="updateImage(event)">
+                                    <img src="{% static 'img/profile-pic.png' %}" alt="" class="rounded-circle" style="width: 50%; margin-left: 27.5%; object-fit: cover; cursor: pointer;" onchange="updateImage(event)">
                                     {% endif %}
                                     <input type="file" id="fileInput" name="image" accept="image/*" class="form-control" style="opacity: 0;">
                                     <br>

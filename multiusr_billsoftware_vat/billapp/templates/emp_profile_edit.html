@@ -79,7 +79,7 @@
                                     {% if emp.profile_pic %}
                                     <img class="rounded-circle" src="{{ emp.profile_pic.url }}" alt="" style="width: 50%; margin-left: 27.5%;  cursor: pointer;" onchange="updateImage(event)">
                                     {% else %}
-                                    <img src="{% static 'img/default/profile-pic.png' %}" alt="" class="rounded-circle" style="width: 50%; margin-left: 27.5%; object-fit: cover; cursor: pointer;" onchange="updateImage(event)">
+                                    <img src="{% static 'img/profile-pic.png' %}" alt="" class="rounded-circle" style="width: 50%; margin-left: 27.5%; object-fit: cover; cursor: pointer;" onchange="updateImage(event)">
                                     {% endif %}
                                     <input type="file" id="fileInput" name="image" accept="image/*" class="form-control" style="opacity: 0;">
                                     <br>
@@ -88,7 +88,7 @@
                             <div class="row p-3" id="cname" style="background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                                 <div class="col-md-5 mt-2" id="label">Company Name</div>
                                 <div class="col">
-                                    <input type="text" class="form-control" name="cname"  value="{{cmp.company_name}}" style="border: 1px solid skyblue;" readonly>
+                                    <input type="text" class="form-control" name="cname"  value="{{emp.company.company_name}}" style="border: 1px solid skyblue;" readonly>
                                 </div>   
                             </div>
 

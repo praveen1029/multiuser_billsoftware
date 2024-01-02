@@ -4,16 +4,21 @@
     {% load static %}
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <title>Multiuser Billing Software Vat</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <style>
     #welcome{
         padding-top: 10%;
         padding-bottom: 2.2%;
-        background-color: #8e44ad;
+        background: linear-gradient(to right, #062925, #044A42, #3A9188);
     }
+
+    .navbar{
+        background: linear-gradient(to right, #062925, #044A42, #3A9188);
+    }
+
 
     .logo-text {
       font-family: Arial, sans-serif;
@@ -26,7 +31,7 @@
     }
 
     .navbar-nav .nav-item.active a{
-        background-color: #8e44ad;
+        background-color: #3A9188;
         padding-left: 3vh;
         padding-right: 3vh;
     }
@@ -78,8 +83,8 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  background: #8e44ad;
-  color: #fff;
+  background: linear-gradient(to left, #3A9188, #3A9188);
+  color: white;
   text-transform: uppercase;
   font-family: "Muli-SemiBold";
   font-size: 15px;
@@ -98,13 +103,84 @@ a{
     text-decoration: none;
 }
 
+
+@media screen and (min-width: 100px) and (max-width: 250px) {
+    .man_arrow{
+       display: none;
+    }
+
+    #welcome{
+        padding-top: 100%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+
+@media screen and (min-width: 250px) and (max-width: 500px) {
+    .man_arrow{
+       display: none;
+    }
+
+    #welcome{
+        padding-top: 50%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+}
+
+@media screen and (min-width: 501px) and (max-width: 780px) {
+    .man_arrow{
+       display: none;
+    }
+
+    #welcome{
+        padding-top: 30%;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
+}
+
+@media screen and (min-width: 780px) and (max-width: 991px) {
+    .man_arrow{
+        width: 50%;
+    }
+
+    #welcome{
+        padding-top: 20%;
+        padding-bottom: 20%;
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+
+    #imagediv{
+        margin-top: -30%;
+    }
+
+}
+
+@media screen and (min-width: 990px) and (max-width: 1300px) {
+    .man_arrow{
+        width: 50%;
+    }
+
+    #imagediv{
+        margin-top: -50%;
+    }
+    
+    #welcome{
+        padding-bottom: 30%;
+    }
+
+}
 </style>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top fixed-top" style="border-radius: 1px solid black;">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top fixed-top" style="border-radius: 1px solid black;">
     <a class="navbar-brand" href="#">
-        <span class="logo-text">
+        <span class="logo-text text-white">
             Multiuser Billing <br> Software Vat
         </span>
     </a>
@@ -117,18 +193,17 @@ a{
             <a class="nav-link" href="{% url 'home' %}" style="color: white; margin-left: 5vh;">Home </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" style="color: black;">About</a>
+            <a class="nav-link" href="#" style="color: white;">About</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" style="color: black;">Services</a>
+            <a class="nav-link" href="#" style="color: white;">Services</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#" style="color: black;">Contact</a>
+            <a class="nav-link" href="#" style="color: white;">Contact</a>
         </li>
         </ul>
     </div>
     </nav>
-
 
     <section id="welcome">
         <div class="container">
@@ -173,19 +248,22 @@ a{
                     </div>
                 </div>
                 <br>
-                <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-4">
-                        <a href="{% url 'cmp_register' %}" class="btn btn-danger" style="width:25vh">Register a Company</a>
+
+                <center>
+                    <div class="row" id="buttondiv">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
+                            <a href="{% url 'cmp_register' %}" class="btn btn-danger" style="width:105%">Register a Company</a>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4">
+                            <a href="{% url 'emp_register' %}" class="btn btn-success" style="width:105%">Register as a Staff</a>
+                        </div>
                     </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-4">
-                        <a href="{% url 'emp_register' %}" class="btn btn-success" style="width:25vh">Register as a Staff</a>
-                    </div>
-                </div>
-                <div class="position-relative" style="z-index: 99;">
+                </center>
+                <div class="position-relative" style="z-index: 99;" id="imagediv">
                     <div class="position-absolute" class="man_arrow_div">
-                      <img src="{% static 'img/man_arrow.png' %}" class="man_arrow" draggable="false" alt="" width="75%"> 
+                      <img src="{% static 'img/man_arrow.png' %}" class="man_arrow img-fluid" draggable="false" alt="" width="75%"> 
                    </div>
                 </div>
             </div>

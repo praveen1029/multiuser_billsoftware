@@ -27,5 +27,9 @@ urlpatterns = [
     path('item_list/',views.item_list,name='item_list'),  
     path('load_item_create/',views.load_item_create,name='load_item_create'),  
     path('item_create',views.item_create,name='item_create'),  
+    path('load_staff_request/',views.load_staff_request,name='load_staff_request'),  
+    path('load_staff_list/',views.load_staff_list,name='load_staff_list'),  
+    path('accept_staff/<int:id>',views.accept_staff,name='accept_staff'),  
+    path('reject_staff/<int:id>',views.reject_staff,name='reject_staff'),  
 
 ]

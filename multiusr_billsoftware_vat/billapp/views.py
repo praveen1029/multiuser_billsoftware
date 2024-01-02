@@ -27,14 +27,6 @@ def cmp_details(request,id):
 def emp_register(request):
   return render(request, 'emp_register.html')
 
-def dashboard(request):
-  context = {'usr': request.user}
-  return render(request, 'dashboard.html', context)
-
-def logout(request):
-    auth.logout(request)
-    return redirect('/')
-
 def register_company(request):
   if request.method == 'POST':
     fname = request.POST['fname']
@@ -92,7 +84,6 @@ def register_company_details(request,id):
     cust.gst_type = gsttype
     cust.gst_no = gstno
     cust.save()
-
     return redirect('login')
 
 def register_employee(request):
@@ -111,7 +102,8 @@ def register_employee(request):
       messages.info(request, 'Sorry, Company Code is Invalid !!')
       return redirect('emp_register')
     
-    emp_names = Employee.objects.filter(company_code = ccode).values_list('user',flat=True)
+    cmp = Company.objects.get(company_code = ccode)
+    emp_names = Employee.objects.filter(company = cmp).values_list('user',flat=True)
     for e in emp_names:
        usr = CustomUser.objects.get(id=e)
        if str(fname).lower() == (usr.first_name ).lower() and str(lname).lower() == (usr.last_name).lower():
@@ -125,7 +117,7 @@ def register_employee(request):
 
       elif not CustomUser.objects.filter(email = email).exists():
         user_data = CustomUser.objects.create_user(first_name = fname, last_name = lname, username = uname, email = email, password = passw)
-        emp = Employee(user = user_data, profile_pic = rfile, company_code=ccode, contact=phno)
+        emp = Employee(user = user_data, company = cmp, profile_pic = rfile, contact=phno)
         emp.save()
         return redirect('login')
 
@@ -135,33 +127,7 @@ def register_employee(request):
       
     messages.info(request, 'Sorry, Passwords must match !!')
     return render(request,'emp_register.html')
-
-def user_login(request):
-  if request.method == 'POST':
-    email = request.POST['email']
-    cpass = request.POST['pass']
-    try:
-      usr = CustomUser.objects.get(email=email)
-      log_user = auth.authenticate(username = usr.username, password = cpass)
-      if log_user is not None:
-        if usr.is_company == 1:
-          auth.login(request, log_user)
-          return redirect('dashboard')
-        else:
-          emp = Employee.objects.get(user=usr)
-          if emp.is_approved == 0:
-            messages.info(request,'Employee is not Approved !!')
-            return redirect('login')
-          else:
-            auth.login(request, log_user)
-            return redirect('dashboard')
-      messages.info(request,'Invalid Login Details !!')
-      return redirect('login')
-    
-    except:
-        messages.info(request,'Invalid Login Details !!')
-        return redirect('login')
-    
+  
 def change_password(request):
   if request.method == 'POST':
     email= request.POST.get('email')
@@ -183,18 +149,51 @@ def change_password(request):
       messages.info(request,'Password reset mail sent !!')
       return redirect('forgot_password')
 
+def user_login(request):
+  if request.method == 'POST':
+    email = request.POST['email']
+    cpass = request.POST['pass']
+
+    try:
+      usr = CustomUser.objects.get(email=email)
+      log_user = auth.authenticate(username = usr.username, password = cpass)
+      if log_user is not None:
+        if usr.is_company == 1:
+          auth.login(request, log_user)
+          return redirect('dashboard')
+        else:
+          emp = Employee.objects.get(user=usr)
+          if emp.is_approved == 0:
+            messages.info(request,'Employee is not Approved !!')
+            return redirect('login')
+          else:
+            auth.login(request, log_user)
+            return redirect('dashboard')
+      messages.info(request,'Invalid Login Details !!')
+      return redirect('login')
+    
+    except:
+        messages.info(request,'Employee do not exist !!')
+        return redirect('login')
+    
+
+def dashboard(request):
+  context = {'usr': request.user}
+  return render(request, 'dashboard.html', context)
+
+def logout(request):
+  auth.logout(request)
+  return redirect('/')
+
 def cmp_profile(request):
-  usr = request.user
-  cmp = Company.objects.get(user=usr)
-  context = {'usr' : usr, 'cmp' : cmp}
+  cmp = Company.objects.get(user = request.user)
+  context = {'usr' : request.user, 'cmp' : cmp}
   return render(request,'cmp_profile.html',context)
 
 def load_edit_cmp_profile(request):
-  usr = request.user
-  cmp = Company.objects.get(user=usr)
-  context = {'usr' : usr, 'cmp' : cmp}
+  cmp = Company.objects.get(user = request.user)
+  context = {'usr' : request.user, 'cmp' : cmp}
   return render(request,'cmp_profile_edit.html',context)
-
 
 def edit_cmp_profile(request):
   cmp =  Company.objects.get(user = request.user)
@@ -231,17 +230,13 @@ def edit_cmp_profile(request):
     return redirect('cmp_profile') 
   
 def emp_profile(request):
-  usr = request.user.id
-  emp = Employee.objects.get(user=usr)
-  cmp = Company.objects.get(company_code = emp.company_code)
-  context = {'usr' : usr, 'emp' : emp, 'cmp':cmp}
+  emp = Employee.objects.get(user=request.user)
+  context = {'usr' : request.user, 'emp' : emp}
   return render(request,'emp_profile.html',context)
 
 def load_edit_emp_profile(request):
-  usr = request.user
-  emp = Employee.objects.get(user=usr)
-  cmp = Company.objects.get(company_code = emp.company_code)
-  context = {'usr' : usr, 'emp' : emp, 'cmp':cmp}
+  emp = Employee.objects.get(user=request.user)
+  context = {'usr' : request.user, 'emp' : emp}
   return render(request,'emp_profile_edit.html',context)
 
 def edit_emp_profile(request):
@@ -269,15 +264,38 @@ def edit_emp_profile(request):
     emp.user.save() 
     return redirect('emp_profile') 
 
+def load_staff_request(request):
+  cmp = Company.objects.get(user = request.user)
+  emp = Employee.objects.filter(company = cmp, is_approved = 0)
+  context = {'usr':request.user, 'emp':emp, 'cmp':cmp}
+  return render(request,'staff_request.html',context)
+
+def load_staff_list(request):
+  cmp = Company.objects.get(user = request.user)
+  emp = Employee.objects.filter(company = cmp, is_approved = 1)
+  context = {'usr':request.user, 'emp':emp, 'cmp':cmp}
+  return render(request,'staff_list.html',context)
+
+def accept_staff(request,id):
+  emp = Employee.objects.get(id=id)
+  emp.is_approved = 1
+  emp.save()
+  messages.info(request,'Employee Approved !!')
+  return redirect('load_staff_request')
+
+def reject_staff(request,id):
+  Employee.objects.get(id=id).delete()
+  messages.info(request,'Employee Deleted !!')
+  return redirect('load_staff_request')
 
 def item_list(request):
-  itm = Item.objects.filter(user=request.user)
-  context = {'itm' : itm}
+  itm = Item.objects.filter(user = request.user)
+  context = {'itm' : itm, 'usr' : request.user}
   return render(request,'item_list.html',context)
 
 def load_item_create(request):
   tod = timezone.now().date().strftime("%Y-%m-%d")
-  return render(request,'item_create.html',{'tod':tod})
+  return render(request,'item_create.html',{'tod':tod, 'usr':request.user})
 
 def item_create(request):
   if request.method=='POST':
@@ -286,7 +304,6 @@ def item_create(request):
       type = 'Service'
     else:
       type = 'Goods'
-
     itm_name = request.POST.get('name')
     itm_hsn = request.POST.get('hsn')
     itm_unit = request.POST.get('unit')
