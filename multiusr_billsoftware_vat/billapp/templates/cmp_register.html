@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <title>Multiuser Billing Software Vat</title>
 </head>
 
@@ -94,8 +96,8 @@
 }
 
 .woman_arrow{
-    margin-left: -70%;
-    margin-top: 60%;
+    margin-left: 15%;
+    margin-top: -100%;
 }
 
 @media screen and (min-width: 250px) and (max-width: 750px) {
@@ -112,7 +114,7 @@
 
 @media screen and (min-width: 750px) and (max-width: 1000px) {
     .woman_arrow{
-        width: 75%;
+        display: none;
     }
 
     #welcome{
@@ -156,17 +158,17 @@
     <section id="welcome">
         <div class="container">
             <div class="row d-flex align-items-center">
-            <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light" data-aos="fade-right">
-            </div>
-
-            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+            <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light" >
                 <div class="position-relative" style="z-index: 99;" id="imagediv">
                     <div class="position-absolute" class="women_arrow_div">
-                      <img src="{% static 'img/women_arrow.png' %}" class="woman_arrow" draggable="false" alt=""> 
+                      <img src="{% static 'img/women_arrow.png' %}" class="woman_arrow" draggable="false" alt="" data-aos="fade-right" data-aos-delay="500" data-aos-duration="1000"> 
                    </div>
                 </div>
+            </div>
+
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="500" data-aos-duration="2000">
                 <div class="row">
-                    <form method="post" action="{% url 'register_company' %}" onsubmit="return validate()">
+                    <form method="post" action="{% url 'register_company' %}" enctype="multipart/form-data" onsubmit="return validate()" style="border-radius: 3vh;">
                         {% csrf_token %}
                         <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Register Company</h3>
                         {% for message in messages %}
@@ -195,7 +197,7 @@
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-phone-handset"></span>
-                            <input type="text" class="form-control" name="phno" placeholder="Phone Number"  pattern="d{10}" title="Phone Number need 10 Digits"  required>
+                            <input type="text" class="form-control" name="phno" placeholder="Phone Number" pattern="^\d{10}$" title="Phone Number need 10 Digits"  required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
@@ -207,7 +209,7 @@
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
-                            <input type="file" class="form-control" name="rfile" placeholder="Enter Required Files">
+                            <input type="file" class="form-control" name="rfile"  placeholder="Enter Required Files">
                         </div>
                         <button id="register">
                             <span>Next</span>
@@ -253,6 +255,13 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    
+    <script>
+        AOS.init({
+            once: true,
+        });
+    </script>
 
 </body>
 </html>

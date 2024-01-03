@@ -5,6 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <title>Multiuser Billing Software Vat</title>
 </head>
 
@@ -168,9 +170,9 @@
             <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light" data-aos="fade-right">
             </div>
 
-            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="500" data-aos-duration="1000">
                 <div class="row">
-                    <form action="{% url 'register_employee' %}" method="post" onsubmit="return validate()">
+                    <form action="{% url 'register_employee' %}" method="post" enctype="multipart/form-data" onsubmit="return validate()" style="border-radius: 3vh;">
                         {% csrf_token %}
                         <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Employee Register</h3>
                         {% for message in messages %}
@@ -199,7 +201,7 @@
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-phone-handset"></span>
-                            <input type="text" class="form-control" name="phno" placeholder="Phone Number"  pattern="d{10}" title="Phone Number need 10 Digits" required>
+                            <input type="text" class="form-control" name="phno" placeholder="Phone Number"  pattern="^\d{10}$" title="Phone Number need 10 Digits" required>
                         </div>
 
                         <div class="form-holder">
@@ -261,4 +263,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
+
+    
+<script>
+    AOS.init({
+        once: true,
+    });
+</script>
 </html>

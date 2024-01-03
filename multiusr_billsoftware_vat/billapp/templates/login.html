@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     {% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Multiuser Billing Software Vat</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Multiuser Billing Software Vat</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 </head>
 
 <style>
@@ -208,12 +210,11 @@ a{
     <section id="welcome">
         <div class="container">
             <div class="row d-flex align-items-center">
-            <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light" data-aos="fade-right">
-            </div>
+            <div class=" col-lg-3 py-5 py-lg-0 order-2 order-lg-1 text-light"></div>
 
-            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left">
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-right" data-aos-delay="500" data-aos-duration="2000">
                 <div class="row">
-                    <form action="{% url 'user_login' %}" method="post">
+                    <form action="{% url 'user_login' %}" method="post" style="border-radius: 3vh;">
                         {% csrf_token %}
                         
                         <h3 class="text-center" style="color: rgb(255, 255, 255);text-shadow: 2px 2px 4px #000000;font-weight: bold;">Login</h3>
@@ -227,7 +228,7 @@ a{
                         <br>
                         <div class="form-holder">
                             <span class="lnr lnr-user"></span>
-                            <input type="email" class="form-control" name="email" placeholder="email" required>
+                            <input type="email" class="form-control" name="email" placeholder="Email" required>
                         </div>
                         <div class="form-holder">
                             <span class="lnr lnr-lock"></span>
@@ -241,7 +242,7 @@ a{
                     </form>
                 </div>
                 <br>
-                <div class="row">
+                <div class="row" >
                     <div class="col-md-3"></div>
                     <div class="col-md-6 text-center">
                         <b class="text-white">New Here ?</b>
@@ -249,11 +250,11 @@ a{
                 </div>
                 <br>
 
-                <center>
-                    <div class="row" id="buttondiv">
+                <center >
+                    <div class="row" id="buttondiv" >
                         <div class="col-md-1"></div>
                         <div class="col-md-4">
-                            <a href="{% url 'cmp_register' %}" class="btn btn-danger" style="width:105%">Register a Company</a>
+                            <a href="{% url 'cmp_register' %}" class="btn btn-danger" style="width:105%" >Register a Company</a>
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-md-4">
@@ -261,9 +262,9 @@ a{
                         </div>
                     </div>
                 </center>
-                <div class="position-relative" style="z-index: 99;" id="imagediv">
-                    <div class="position-absolute" class="man_arrow_div">
-                      <img src="{% static 'img/man_arrow.png' %}" class="man_arrow img-fluid" draggable="false" alt="" width="75%"> 
+                <div class="position-relative" style="z-index: 99;" id="imagediv" >
+                    <div class="position-absolute" class="man_arrow_div" >
+                      <img src="{% static 'img/man_arrow.png' %}" class="man_arrow img-fluid" draggable="false" alt="" width="75%"  data-aos="fade-left"  data-aos-delay="500" data-aos-duration="2000"> 
                    </div>
                 </div>
             </div>
@@ -275,6 +276,12 @@ a{
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script>
+        AOS.init({
+            once: true,
+        });
+    </script>
 
 </body>
 </html>

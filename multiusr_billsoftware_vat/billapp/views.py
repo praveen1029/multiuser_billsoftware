@@ -21,7 +21,7 @@ def cmp_register(request):
   return render(request, 'cmp_register.html')
 
 def cmp_details(request,id):
-  context = {'id' : id}
+  context = {'id':id}
   return render(request, 'cmp_details.html', context)
 
 def emp_register(request):
@@ -37,7 +37,7 @@ def register_company(request):
     passw = request.POST['pass']
     cpass = request.POST['cpass']
     rfile = request.FILES.get('rfile')
-    
+
     if passw == cpass:
       if CustomUser.objects.filter(username = uname).exists():
         messages.info(request, 'Sorry, Username already exists !!')
@@ -45,7 +45,6 @@ def register_company(request):
 
       elif not CustomUser.objects.filter(email = email).exists():
         user_data = CustomUser.objects.create_user(first_name = fname, last_name = lname, username = uname, email = email, password = passw, is_company = 1)
-
         cmp = Company( contact = phno, user = user_data, profile_pic = rfile)
         cmp.save()
         return redirect('cmp_details',user_data.id)
@@ -178,7 +177,7 @@ def user_login(request):
     
 
 def dashboard(request):
-  context = {'usr': request.user}
+  context = {'usr':request.user}
   return render(request, 'dashboard.html', context)
 
 def logout(request):
@@ -187,12 +186,12 @@ def logout(request):
 
 def cmp_profile(request):
   cmp = Company.objects.get(user = request.user)
-  context = {'usr' : request.user, 'cmp' : cmp}
+  context = {'usr':request.user, 'cmp':cmp}
   return render(request,'cmp_profile.html',context)
 
 def load_edit_cmp_profile(request):
   cmp = Company.objects.get(user = request.user)
-  context = {'usr' : request.user, 'cmp' : cmp}
+  context = {'usr':request.user, 'cmp':cmp}
   return render(request,'cmp_profile_edit.html',context)
 
 def edit_cmp_profile(request):
@@ -231,12 +230,12 @@ def edit_cmp_profile(request):
   
 def emp_profile(request):
   emp = Employee.objects.get(user=request.user)
-  context = {'usr' : request.user, 'emp' : emp}
+  context = {'usr':request.user, 'emp':emp}
   return render(request,'emp_profile.html',context)
 
 def load_edit_emp_profile(request):
   emp = Employee.objects.get(user=request.user)
-  context = {'usr' : request.user, 'emp' : emp}
+  context = {'usr':request.user, 'emp':emp}
   return render(request,'emp_profile_edit.html',context)
 
 def edit_emp_profile(request):
@@ -289,8 +288,13 @@ def reject_staff(request,id):
   return redirect('load_staff_request')
 
 def item_list(request):
-  itm = Item.objects.filter(user = request.user)
-  context = {'itm' : itm, 'usr' : request.user}
+  if request.user.is_company:
+    itm = Item.objects.filter(company = request.user.company)
+  else:
+    itm = Item.objects.filter(company = request.user.employee.company)
+  fitm = itm[0]
+  ftrans = Transactions.objects.filter(item = fitm)
+  context = {'itm':itm, 'usr':request.user, 'fitm':fitm, 'ftrans':ftrans}
   return render(request,'item_list.html',context)
 
 def load_item_create(request):
@@ -332,6 +336,20 @@ def item_create(request):
                 itm_at_price = itm_at_price,
                 itm_date = itm_date)
     item.save()
+
+    trans = Transactions(user = request.user, item = item, trans_type = 'Stock Open', trans_date = itm_date, trans_qty = 0, trans_current_qty = stock_in_hand, 
+                         trans_adjusted_qty = stock_in_hand, trans_price = itm_at_price)
+
+    if request.user.is_company:
+      item.company = request.user.company
+      trans.company = request.user.company
+
+    else:
+      item.company = request.user.employee.company
+      trans.company = request.user.employee.company
+ 
+    item.save()
+    trans.save()
 
     if request.POST.get('save_and_next'):
       return redirect('load_item_create')

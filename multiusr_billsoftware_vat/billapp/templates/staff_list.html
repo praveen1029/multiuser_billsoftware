@@ -5,21 +5,28 @@
 
 <style>
   table tr td:hover {
-        cursor: pointer;
-    }
+    cursor: pointer;
+  }
 
-    tr td:nth-child(even) {
-        background-color: #e6e6e6;
-    }
+  #cancel{
+    border: 1px solid #044A42;
+  }
 
-    tr td:nth-child(odd) {
-        background-color: #B8E1DD;
-    }
+  #cancel:hover{
+    background-color: #044A42;
+    color: white;
+  }
+
+  td{
+    border-right: 1px solid white;
+  }
+
+  tbody:hover td:not(:last-child){
+    border-right: 1px solid #044A42;
+  }
 </style>
+
 <body  style="background-color: rgba(176, 199, 205, 0.4);">
-  
-
-
 <div class="body-wrapper">
   <div class="container-fluid">
 
@@ -45,12 +52,12 @@
             {% if emp %}
             <tbody class="text-center text-black">
             {% for e in emp %}
-              <tr>
+              <tr style="background-color: #B8E1DD;">
                 <td>{{e.id}}</th>
                 <td class="text-capitalize">{{e.user.first_name}} {{e.user.last_name}}</td>
                 <td>{{e.user.email}}</td>
                 <td>{{e.contact}}</td>
-                <td><a href="{% url 'reject_staff' e.id %}" class="btn btn-outline-danger m-1">Cancel Contract</a></td>
+                <td><a href="{% url 'reject_staff' e.id %}" class="btn m-1" id="cancel">Cancel Contract</a></td>
               </tr>
             {% endfor %}
             </tbody>
@@ -58,7 +65,7 @@
             <tbody>
                 <tr>
                     <td colspan="5" style="background-color: #B8E1DD; color: red; font-size: x-large; text-align: center;">
-                        No Pending Request
+                        No Employees Registered
                     </td>
                 </tr>
             </tbody>

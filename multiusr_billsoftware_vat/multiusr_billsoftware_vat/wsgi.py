@@ -1,5 +1,5 @@
 """
-WSGI config for multiusr_billsoftware_vat project.
+WSGI config for Multiusr_BillSoftware_Vat project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "multiusr_billsoftware_vat.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Multiusr_BillSoftware_Vat.settings")
 
 application = get_wsgi_application()

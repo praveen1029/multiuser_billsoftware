@@ -7,7 +7,7 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault(
-        "DJANGO_SETTINGS_MODULE", "multiusr_billsoftware_vat.settings"
+        "DJANGO_SETTINGS_MODULE", "Multiusr_BillSoftware_Vat.settings"
     )
     try:
         from django.core.management import execute_from_command_line

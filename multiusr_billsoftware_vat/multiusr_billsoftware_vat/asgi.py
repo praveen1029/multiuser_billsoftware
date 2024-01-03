@@ -1,5 +1,5 @@
 """
-ASGI config for multiusr_billsoftware_vat project.
+ASGI config for Multiusr_BillSoftware_Vat project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "multiusr_billsoftware_vat.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Multiusr_BillSoftware_Vat.settings")
 
 application = get_asgi_application()

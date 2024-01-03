@@ -214,8 +214,8 @@
                 <a class="nav-link " href="" id="drop2" data-bs-toggle="dropdown"
                   aria-expanded="false">
                   {% if usr.is_company == True %}
-                  {% if cmp.profile_pic %}
-                  <img width="35" height="35" class="rounded-circle" src="{{ cmp.profile_pic.url }}" alt="">
+                  {% if usr.company.profile_pic %}
+                  <img width="35" height="35" class="rounded-circle" src="{{ usr.company.profile_pic.url }}" alt="">
                   {% else %}
                   <img src="{% static 'img/profile-pic.png' %}" alt="" width="35" height="35" class="rounded-circle">
                   {% endif %}
@@ -225,8 +225,8 @@
                     </div>
                   </div>
                   {% else %}
-                  {% if emp.profile_pic %}
-                  <img width="35" height="35" class="rounded-circle" src="{{ emp.profile_pic.url }}" alt="">
+                  {% if usr.employee.profile_pic %}
+                  <img width="35" height="35" class="rounded-circle" src="{{ usr.employee.profile_pic.url }}" alt="">
                   {% else %}
                   <img src="{% static 'img/profile-pic.png' %}" alt="" width="35" height="35" class="rounded-circle">
                   {% endif %}

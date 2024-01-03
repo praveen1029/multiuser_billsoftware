@@ -5,21 +5,37 @@
 
 <style>
   table tr td:hover {
-        cursor: pointer;
-    }
+    cursor: pointer;
+  }
 
-    tr td:nth-child(even) {
-        background-color: #e6e6e6;
-    }
+  td{
+    border-right: 1px solid white;
+  }
 
-    tr td:nth-child(odd) {
-        background-color: #B8E1DD;
-    }
+  tbody:hover td:not(:last-child){
+    border-right: 1px solid #044A42;
+  }
+
+  #cancel{
+    border: 1px solid #044A42;
+  }
+
+  #cancel:hover{
+    background-color: #044A42;
+    color: white;
+  }
+
+  #accept{
+    border: 1px solid #044A42;
+  }
+
+  #accept:hover{
+    background-color: #044A42;
+    color: white;
+  }
+
 </style>
 <body  style="background-color: rgba(176, 199, 205, 0.4);">
-  
-
-
 <div class="body-wrapper">
   <div class="container-fluid">
 
@@ -45,14 +61,14 @@
             {% if emp %}
             <tbody class="text-center text-black">
             {% for e in emp %}
-              <tr>
-                <td>{{e.id}}</th>
+              <tr style="background-color: #B8E1DD;">
+                <td >{{e.id}}</th>
                 <td class="text-capitalize">{{e.user.first_name}} {{e.user.last_name}}</td>
                 <td>{{e.user.email}}</td>
                 <td>{{e.contact}}</td>
-                <td>
-                    <a href="{% url 'accept_staff' e.id %}" class="btn btn-outline-primary m-1">Accept</a>
-                    <a href="{% url 'reject_staff' e.id %}" class="btn btn-outline-danger m-1">Reject</a>
+                <td style="border-right: none;">
+                    <a href="{% url 'accept_staff' e.id %}" class="btn m-1" id="accept">Accept</a>
+                    <a href="{% url 'reject_staff' e.id %}" class="btn m-1" id="cancel">Reject</a>
                 </td>
               </tr>
             {% endfor %}
