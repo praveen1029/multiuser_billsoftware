@@ -13,24 +13,24 @@
   }
 
   tbody:hover td:not(:last-child){
-    border-right: 1px solid #044A42;
+    border-right: 1px solid #68020F;
   }
 
   #cancel{
-    border: 1px solid #044A42;
+    border: 1px solid #68020F;
   }
 
   #cancel:hover{
-    background-color: #044A42;
+    background-color: #68020F;
     color: white;
   }
 
   #accept{
-    border: 1px solid #044A42;
+    border: 1px solid #68020F;
   }
 
   #accept:hover{
-    background-color: #044A42;
+    background-color: #68020F;
     color: white;
   }
 
@@ -49,7 +49,7 @@
 
       <div style="overflow-x:auto;">  
         <table class="table table-hover  mt-5 " style="background-color: white;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
-            <thead style="background: #044A42;">
+            <thead style="background: #68020F;">
               <tr class="text-center text-light" >
                 <th scope="col" style="border-right: 1px solid;"><b>ID</b></th>
                 <th scope="col" style="border-right: 1px solid;"><b>Name</b></th>
@@ -61,7 +61,7 @@
             {% if emp %}
             <tbody class="text-center text-black">
             {% for e in emp %}
-              <tr style="background-color: #B8E1DD;">
+              <tr style="background-color: #FFD6D7;">
                 <td >{{e.id}}</th>
                 <td class="text-capitalize">{{e.user.first_name}} {{e.user.last_name}}</td>
                 <td>{{e.user.email}}</td>
@@ -76,7 +76,7 @@
             {% else %}
             <tbody>
                 <tr>
-                    <td colspan="5" style="background-color: #B8E1DD; color: red; font-size: x-large; text-align: center;">
+                    <td colspan="5" style="background-color: #FFD6D7; color: red; font-size: x-large; text-align: center;">
                         No Pending Request
                     </td>
                 </tr>

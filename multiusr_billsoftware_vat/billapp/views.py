@@ -292,9 +292,13 @@ def item_list(request):
     itm = Item.objects.filter(company = request.user.company)
   else:
     itm = Item.objects.filter(company = request.user.employee.company)
-  fitm = itm[0]
-  ftrans = Transactions.objects.filter(item = fitm)
-  context = {'itm':itm, 'usr':request.user, 'fitm':fitm, 'ftrans':ftrans}
+  
+  if itm:
+    fitm = itm[0]
+    ftrans = Transactions.objects.filter(item = fitm)
+    context = {'itm':itm, 'usr':request.user, 'fitm':fitm, 'ftrans':ftrans}
+  else:
+        context = {'itm':itm, 'usr':request.user}
   return render(request,'item_list.html',context)
 
 def load_item_create(request):

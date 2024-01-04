@@ -14,11 +14,11 @@
     #welcome{
         padding-top: 10%;
         padding-bottom: 12%;
-        background: linear-gradient(to right, #062925, #044A42, #3A9188);
+        background: linear-gradient(to right, #68020F, #F21137);
     }
 
     .navbar{
-        background: linear-gradient(to right, #062925, #044A42, #3A9188);
+        background: linear-gradient(to right, #68020F, #F21137);
     }
 
     .logo-text {
@@ -32,7 +32,7 @@
     }
 
     .navbar-nav .nav-item.active a{
-        background-color: #3A9188;
+        background-color: #FFADB0;
         padding-left: 3vh;
         padding-right: 3vh;
     }
@@ -99,7 +99,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}" style="color: white; margin-left: 5vh;">Home </a>
+            <a class="nav-link" href="{% url 'home' %}" style="color: black; margin-left: 5vh;">Home </a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white" href="#">About</a>
@@ -112,7 +112,7 @@
         </li>
         </ul>
         <a class="btn my-2 my-sm-0" href="{% url 'login' %}" type="button" 
-        style="border: 2px solid #044A42; border-radius: 1vh; background-color: #3A9188; color: white; width: 7%;">Login</a>
+        style="border: 2px solid #FFADB0; border-radius: 1vh; background-color: #FFADB0; color: black; width: 7%;">Login</a>
     </div>
     </nav>
 
@@ -124,7 +124,7 @@
               <h2>Multiuser Billing Software Vat </h2>
             </div>
             <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="fade-left" data-aos-delay="500" data-aos-duration="1000">
-              <img src="{% static 'img/multi_usr.png' %}" class="img-fluid" alt="" id="main-img">
+              <img src="{% static 'img/multi_usr.png' %}" class="img-fluid" alt="" id="main-img" draggable="false">
             </div>
           </div>
         </div>
