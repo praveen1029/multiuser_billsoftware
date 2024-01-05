@@ -24,12 +24,15 @@ urlpatterns = [
     path('emp_profile/',views.emp_profile,name='emp_profile'),  
     path('load_edit_emp_profile/',views.load_edit_emp_profile,name='load_edit_emp_profile'),  
     path('edit_emp_profile',views.edit_emp_profile,name='edit_emp_profile'),  
-    path('item_list/',views.item_list,name='item_list'),  
-    path('load_item_create/',views.load_item_create,name='load_item_create'),  
-    path('item_create',views.item_create,name='item_create'),  
     path('load_staff_request/',views.load_staff_request,name='load_staff_request'),  
     path('load_staff_list/',views.load_staff_list,name='load_staff_list'),  
     path('accept_staff/<int:id>',views.accept_staff,name='accept_staff'),  
     path('reject_staff/<int:id>',views.reject_staff,name='reject_staff'),  
+    path('item_list_first/',views.item_list_first,name='item_list_first'),  
+    path('item_list/<int:id>',views.item_list,name='item_list'),  
+    path('load_item_create/',views.load_item_create,name='load_item_create'),  
+    path('item_create',views.item_create,name='item_create'),  
+    path('adjust_stock/<int:id>',views.adjust_stock,name='adjust_stock'),  
+    path('create_unit',views.create_unit,name='create_unit'),  
 
 ]

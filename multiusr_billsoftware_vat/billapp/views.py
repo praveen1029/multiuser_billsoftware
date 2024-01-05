@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.contrib import messages
-from django.contrib.auth.models import User, auth
+from django.contrib.auth.models import auth
 from django.utils.crypto import get_random_string
 import random
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
+from django.http.response import JsonResponse
 
 def home(request):
   return render(request, 'home.html')
@@ -287,31 +288,43 @@ def reject_staff(request,id):
   messages.info(request,'Employee Deleted !!')
   return redirect('load_staff_request')
 
-def item_list(request):
+def item_list_first(request):
   if request.user.is_company:
-    itm = Item.objects.filter(company = request.user.company)
+    itm_list = Item.objects.filter(company = request.user.company)
   else:
-    itm = Item.objects.filter(company = request.user.employee.company)
+    itm_list = Item.objects.filter(company = request.user.employee.company)
   
-  if itm:
-    fitm = itm[0]
-    ftrans = Transactions.objects.filter(item = fitm)
-    context = {'itm':itm, 'usr':request.user, 'fitm':fitm, 'ftrans':ftrans}
+  if itm_list:
+    itm = itm_list[0]
+    trans = Transactions.objects.filter(item = itm)
+    context = {'itm_list':itm_list, 'usr':request.user, 'itm':itm, 'trans':trans}
   else:
-        context = {'itm':itm, 'usr':request.user}
+    context = {'itm_list':itm_list, 'usr':request.user}
   return render(request,'item_list.html',context)
+
+def item_list(request,id):
+  if request.user.is_company:
+    itm_list = Item.objects.filter(company = request.user.company)
+  else:
+    itm_list = Item.objects.filter(company = request.user.employee.company)
+  
+  itm = Item.objects.get(id=id)
+  trans = Transactions.objects.filter(item=itm.id)
+  context = {'itm_list':itm_list, 'usr':request.user, 'itm':itm, 'trans':trans}
+  return render(request,'item_list.html',context) 
 
 def load_item_create(request):
   tod = timezone.now().date().strftime("%Y-%m-%d")
-  return render(request,'item_create.html',{'tod':tod, 'usr':request.user})
+  if request.user.is_company:
+    cmp = request.user.company
+  else:
+    cmp = request.user.employee.company
+  unit = Unit.objects.filter(company=cmp)
+  return render(request,'item_create.html',{'tod':tod, 'usr':request.user, 'unit':unit})
 
 def item_create(request):
   if request.method=='POST':
     itm_type = request.POST.get('itm_type')
-    if itm_type:
-      type = 'Service'
-    else:
-      type = 'Goods'
     itm_name = request.POST.get('name')
     itm_hsn = request.POST.get('hsn')
     itm_unit = request.POST.get('unit')
@@ -328,7 +341,7 @@ def item_create(request):
     itm_date = request.POST.get('itm_date')
     
     item = Item(user = request.user,
-                itm_type = type,
+                itm_type = itm_type,
                 itm_name = itm_name,
                 itm_hsn = itm_hsn,
                 itm_unit = itm_unit,
@@ -358,4 +371,48 @@ def item_create(request):
     if request.POST.get('save_and_next'):
       return redirect('load_item_create')
     elif request.POST.get('save'):
-      return redirect('item_list')
+      return redirect('item_list_first')
+    
+def adjust_stock(request,id):
+  if request.method=='POST':
+    itm = Item.objects.get(id=id)
+    if request.user.is_company:
+      cmp = request.user.company
+    else:
+      cmp = request.user.employee.company
+
+    trans_type = request.POST.get('trans_type')
+    if trans_type == 'on':
+      trans_type = 'Stock Reduction'
+      trans_qty = request.POST.get('reduced_qty')
+    else:
+      trans_type = 'Stock Addition'
+      trans_qty = request.POST.get('added_qty')
+    trans_date = request.POST.get('trans_date')
+
+    adjusted_qty= request.POST.get('adjusted_qty')
+    current_qty = request.POST.get('item_qty')
+    itm.itm_stock_in_hand = adjusted_qty
+    itm.save()
+    trans = Transactions(user=request.user,
+                          company=cmp,
+                          item=itm,
+                          trans_type=trans_type,
+                          trans_date=trans_date,
+                          trans_qty=trans_qty,
+                          trans_price=itm.itm_at_price,
+                          trans_current_qty=current_qty,
+                          trans_adjusted_qty=adjusted_qty)
+    trans.save()
+  return redirect('item_list',id)
+
+def create_unit(request):
+  if request.method == 'POST':
+    if request.user.is_company:
+      cmp = request.user.company
+    else:
+      cmp = request.user.employee.company
+    unit_name = request.POST.get('unit_name')
+    unit = Unit(company=cmp, unit_name=unit_name)    
+    unit.save()
+    return JsonResponse({'message': 'success','unit_name':unit_name})

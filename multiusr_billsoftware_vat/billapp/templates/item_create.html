@@ -44,186 +44,170 @@
   select option:hover{
     background-color: black;
   }
+
+  input[type="radio"]:checked{
+    accent-color: #68020F;
+  }
+
+  .input_border{
+    border: 1px solid #68020F;
+  }
+
+  .button_border{
+    border: 1px solid #68020F;
+    color: #68020F;
+  }
+
+  .button_border:hover{
+    background-color:#68020F;
+    color: white;
+  }
 </style>
 
 <div class="body-wrapper">
   <br><br><br>
   <div class="row p-0 m-0">
-    <div class="col-12  p-0 m-0">
-      <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width:100%">
+    <div class="col-1"></div>
+    <div class="col-10  p-0 m-0">
+      <div class=" pb-0 mb-0 p-2" style="height:100%;width:100%">
         <br><br>
-        <form action="{% url 'item_create' %}" method="post" enctype="multipart/form-data">
+        <form action="{% url 'item_create' %}" method="post" enctype="multipart/form-data"  onsubmit="return validate()">
           {% csrf_token %}
-            <div class="position-relative">
-              <div class="position-absolute end-0">
-                <div class="d-flex pt-3 pe-3">
-                  <span class="fa fa-cog fs-5 tb p-1 pe-3"></span>
-                  <a href=""><span class="fa fa-times fs-5 tb p-1"></span></a>
+            <div class="bs p-4 rounded mb-5">
+              <br>
+              <div class="row">
+                <div class="col-sm-12 col-md-1"></div>
+                <div class="col-sm-12 col-md-10 pb-4 ">
+                  <center>
+                    <h3><strong class="fw-bolder " style="color: #68020F;">ITEM DETAILS</strong></h3>
+                  </center>
+                  <div class="p-3" style="border: 2px solid #68020F; border-radius: 2.5vh; background-color: #FFD6D7;">
+                    <div class="d-flex">
+                      <div class="pt-5 w-50">
+                        <input type="text" name="itm_type" id="itm_type" hidden>
+                        <label style="user-select: none;" class="fs-4 tb" for="goods">Goods</label>
+                        <input id="goods" class="me-3 " type="radio" name="item_ty" required>
+                        <label style="user-select: none;" class="fs-4 tb" for="service">Services</label>
+                        <input id="service" type="radio" name="item_ty" required>
+                      </div>
+                      <div class="mb-3 w-50 mt-3">
+                        <label class="fw-bold tb fs-3" for="">NAME</label><br>
+                        <input style="color: black;" class="form-control mt-2 input_border text-black" type="text" placeholder="Enter Item Name" autocomplete="off" name="name" >
+                      </div>
+                    </div>
+
+                    <div class="d-flex mt-2">
+                      <div class=" me-3 w-50">
+                        <label class="fw-bold tb fs-3 " for="">HSN </label><br>
+                        <input style="color: black;" class="form-control mt-2 input_border text-black" type="number" placeholder="Enter HSN value" name="hsn">
+                      </div>
+                      <br>
+                      <div class="mb-3 w-50">
+                        <label class="fw-bold tb fs-3" for="">UNIT</label><br>
+                        <div class="d-flex">
+                          <select style="color: black;" class="form-control me-3 mt-2 input_border text-black" id="unit" name="unit" >
+                            <option value="" hidden>Select an option</option>
+                            <option value="Numbers">Numbers</option>
+                            <option value="Packages">Packages</option>
+                            <option value="Box">Box</option>
+                            {% for i in unit %}
+                            <option value="{{ i.unit_name }}">{{ i.unit_name }}</option>
+                            {% endfor %}
+                          </select>
+                          <button type="button" class="btn mt-2 button_border" data-bs-toggle="modal" data-bs-target="#unitmodal" data-bs-whatever="@mdo">
+                            <span class="fa fa-plus" ></span>
+                          </button>
+                        </div>
+                        <div class="modal fade" id="unitmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="color: #68020F; font-weight: 900;">ADD UNIT</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body mb-1 pb-1">
+                                <form class="mb-0" id="unitmodal">
+                                  <div class="mb-3">
+                                    <label for="unit_name" class="col-form-label">UNIT</label>
+                                    <input type="text" class="form-control _border" id="unit_name" placeholder="Enter Unit" style="border: 2px solid #68020F;" name='unit_name'>
+                                  </div>
+                                  <div class="m-0 text-center">
+                                    <label for="message-text" class="col-form-label  text-danger fw-lighter">Example : PCS/BOX/LITER</label>
+                                  </div>
+                                </form>
+                              </div>
+                              <div class="modal-footer d-flex justify-content-center mt-1">
+                                <button type="button" class="btn ps-5 pe-5 button_border" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn ps-5 pe-5 button_border" id="unitmodalsubmit">ADD</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
                 </div>
               </div>
-            </div>
-            <div class="bg-light bs p-4 rounded mb-5">
-                <div class="d-md-flex d-sm-block">
-                  <h5><strong class="fw-bolder">ITEM DETAILS</strong></h5>
-                  <div class="form-check form-switch d-flex">
-                    <label id="lbl1" class="form-check-label fw-bolder" for="itm_type">GOODS</label>
-                    <input class="form-check-input fs-5 ms-2 me-2" type="checkbox" role="switch" id="itm_type">
-                    <label id="lbl2" class="form-check-label fw-bolder" for="itm_type">SERVICE</label>
-                  </div>
-                </div>
-              <br>
-              <div id="main_form_div">
-                <br>
-                <div class="d-flex">
-                  <div class="position-relative">
-                      <div class="position-absolute" style="margin-top: -1.2rem;margin-left: .2rem;">
-                          <label style="color: black;" class="form-check-label fw-bolder">NAME</label>
-                      </div>
-                  </div>
-                  <input style="color: black;" class="form-control border-dark fw-bolder" type="text" placeholder="ITEM NAME" autocomplete="off" name="name" >
-                  <div class="position-relative">
-                      <div class="position-absolute" style="margin-top: -1.2rem;margin-left: 0.6rem;">
-                          <label style="color: black;" class="form-check-label fw-bolder">HSN</label>
-                      </div>
-                  </div>
-                  <input style="color: black;" class="form-control border-dark ms-2 fw-bolder" type="number" placeholder="ITEM HSN" name="hsn" >
-                  <div class="position-relative">
-                      <div class="position-absolute" style="margin-top: -1.2rem;margin-left: 0.6rem;">
-                          <label style="color: black;" class="form-check-label fw-bolder">UNITS</label>
-                      </div>
-                  </div>
-                  <select style="color: black;" class="form-control ms-2 border-dark bg-light me-2" id="" name="unit" >
-                    <option value="">Select an option</option>
-                    <option value="Numbers">Numbers</option>
-                    <option value="Packages">Packages</option>
-                    <option value="Box">Box</option>
-                    {% if item_units %}
-                      {% for i in item_units %}
-                      <option value="{{ i.unit_name }}">{{ i.unit_name|upper }}</option>
-                      <h1>{{ i.unit_name }}</h1>
-                      <h1>{{ item.item_unit }}</h1>
-                      {% endfor %}
-                    {% endif %}
-                  </select>
-                  <!-- <button class="btn bg-warning"><span class="fa fa-plus"></span></button> -->
-                  <!-- modal start -->
-                  <button type="button" class="btn bg-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"><span class="fa fa-plus"></span></button>
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="exampleModalLabel">ADD UNIT</h1>
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body mb-1 pb-1">
-                          <form class="mb-0">
-                            <div class="mb-3">
-                              <label for="recipient-name" class="col-form-label">UNIT</label>
-                              <input type="text" class="form-control border-dark" id="recipient-name" placeholder="ENTER UNIT HERE..">
-                            </div>
-                            <div class="m-0 text-center">
-                              <label for="message-text" class="col-form-label  text-secondary fw-lighter">Example : PCS/BOX/LITER</label>
-                              <!-- <textarea class="form-control" id="message-text"></textarea> -->
-                            </div>
-                          </form>
-                        </div>
-                        <div class="modal-footer d-flex justify-content-center mt-1">
-                          <button type="button" class="btn btn-secondary ps-5 pe-5" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary ps-5 pe-5">ADD</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- modal end -->
-                </div>
-              
-                <div>
-                    <!-- pricing template start -->
-                    <div id="pricing_template" style="background-color: rgba(144, 211, 117, 0.098);">
-                      <div class="row">
-                        <div  class="col-sm-12 col-md-1">
-                          
-                        </div>
-                        <div class="col-sm-12 col-md-10 pb-4">
-                            <div class="text- pt-5">
-                              <input type="text" name="taxable_result" id="taxable_result" hidden>
-                              <label style="user-select: none;" class="fs-4 tb" for="item_tax_1">Tax</label>
-                              <input id="item_tax_1" class="me-3" type="radio" name="item_tax_result" required>
-                              <label style="user-select: none;" class="fs-4 tb" for="item_tax_2">Tax Excempted</label>
-                              <input id="item_tax_2" type="radio" name="item_tax_result" required>
-                            </div>
-                            <br>
-                          <div hidden id="vatdiv" class="mb-3">
-                              <div class="w-50 me-3">
-                              <label class="fw-bold tb fs-3" for="">VAT</label><br>
-                              <input type="text" class="form-control border-dark" name="vat" id='vat'>
-                              </div>
-                          </div>
 
-                          <div class="d-flex">
-                              <div class="w-50 me-3">
-                                <label class="tb fw-bold" for="pur_price">SALES PRICE</label><br>
-                                <input id="sal_price" class="form-control fw-normal border-secondary fs-3" type="number" placeholder="Sales Price here" name="sale_price" required>
-                              </div>
-                              <div class="w-50">
-                                <label class="tb fw-bold" for="">PURCHASE PRICE</label><br>
-                                <input id="pur_price" class="form-control fw-normal border-secondary fs-3" type="number" placeholder="Purchase Price here" name="purchase_price" required>
-                              </div>
-                            </div>
-                        </div>
-                        <div  class="col-sm-12 col-md-1">
-
-                        </div>
-                      </div>
+              <div class="row">
+                <div  class="col-sm-12 col-md-1"></div>
+                <div class="col-sm-12 col-md-5 pb-4">
+                  <div class="me-3 text-center">
+                    <h3><strong class="fw-bolder" style="color: #68020F;">PRICING</strong></h3>
+                  </div>
+                  <div class="p-3" style="border: 2px solid #68020F; border-radius: 2.5vh; background-color: #FFD6D7;">
+                    <div class="pt-5 mb-4" >
+                      <input type="text" name="taxable_result" id="taxable_result" hidden>
+                      <label style="user-select: none;" class="fs-4 tb" for="item_tax_1">Tax</label> &nbsp;
+                      <input id="item_tax_1" class="me-3" type="radio" name="item_tax_result" required>
+                      <label style="user-select: none;" class="fs-4 tb" for="item_tax_2">Tax Excempted</label>&nbsp;
+                      <input id="item_tax_2" type="radio" name="item_tax_result" required>
                     </div>
 
-                    <div id="stock_template" style="background-color: rgba(144, 211, 117, 0.098);">
-                      <div class="row">
-                        <div  class="col-sm-12 col-md-1">
-
-                        </div>
-                        <div class="col-sm-12 col-md-10 pb-4">
-                          <br><br>
-                            <div class="d-flex">
-                              <div class="w-50 me-3">
-                                <label class="tb fw-bold" for="opn_stock_">STOCK IN HAND</label><br>
-                                <input id="opn_stock_" class="form-control fw-normal border-secondary fs-3" type="number" placeholder="Opening Stock here" name="stock_in_hand" required>
-                              </div>
-                              <div id="at_price_div" class="w-50">
-                                <label class="tb fw-bold" for="at_price">AT PRICE</label><br>
-                                <input id="at_price" class="form-control fw-normal border-secondary fs-3" type="number" placeholder="At Price here" name="at_price" required>
-                              </div>
-                            </div>
-                            <br>
-                            <div class="d-flex">
-                              <div class="w-50 me-3">
-                                <label class="tb fw-bold" for="date_">DATE</label><br>
-                                <input id="date" class="form-control fw-normal border-secondary  fs-3" type="date" value="{{ tod }}" name="itm_date">
-                              </div>
-
-                            </div>
-                            <div class="text-start mt-5">
-                              <button class="btn btn-primary bg-gradient  me-3" type="submit" value="save_and_next" name="save_and_next" >Save & Next</submit>
-                              <button class="btn btn-primary bg-gradient  me-3" type="submit" value="save" name="save" >Save</button>
-                            </div>
-                        </div>
-                        <div  class="col-sm-12 col-md-1">
-
-                        </div>
-                        
-                      </div>
+                    <div id="vatdiv" class="mb-2 pt-3" hidden>
+                        <label class="fw-bold tb fs-3" for="">VAT</label><br>
+                        <input type="text" class="form-control mt-1 input_border text-black" name="vat" id='vat'>
                     </div>
-                    <!-- stock template end -->
-                      
+                  
+                    <div class="mb-4 pt-3">
+                      <label class="tb fw-bold" for="pur_price">SALES PRICE</label><br>
+                      <input id="sal_price" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" placeholder="Enter Sales Price" name="sale_price" required>
+                    </div>
+
+                    <div class="mb-4">
+                      <label class="tb fw-bold" for="">PURCHASE PRICE</label><br>
+                      <input id="pur_price" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" placeholder="Enter Purchase Price" name="purchase_price" required>
+                    </div>
+                  </div>
                 </div>
-
-
+                <div class="col-sm-12 col-md-5 pb-4">
+                  <div class="me-3 text-center">
+                    <h3><strong class="fw-bolder" style="color: #68020F;">STOCKS</strong></h3>
+                  </div>
+                  <div class="p-3" style="border: 2px solid #68020F; border-radius: 2.5vh; background-color: #FFD6D7;">
+                    <div class="mb-4 pt-4">
+                      <label class="tb fw-bold" for="opn_stock_">STOCK IN HAND</label><br>
+                      <input id="opn_stock_" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" placeholder="Enter Opening Stock" name="stock_in_hand" required>
+                    </div>
+                    <div class="mb-4">
+                      <label class="tb fw-bold" for="at_price">AT PRICE</label><br>
+                      <input id="at_price" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" placeholder="Enter Price" name="at_price" required>
+                    </div>
+                    <div class="mb-4">
+                      <label class="tb fw-bold" for="date_">DATE</label><br>
+                      <input id="date" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="date" value="{{ tod }}" name="itm_date">
+                    </div>
+                  </div>
+                </div>
+                <div  class="col-sm-12 col-md-1"></div>
+                <div class="text-start" style="margin-left: 9%;">
+                  <button class="btn me-3 button_border" type="submit" value="save_and_next" name="save_and_next">Save & Next</submit>
+                  <button class="btn me-3 button_border" type="submit" value="save" name="save">Save</button>
+                </div>
               </div>
             </div>
         </form>
-
-        
-        
       </div>
     </div>
   </div>
@@ -253,6 +237,38 @@
       $('#taxable_result').val('Non Taxable')
     })
   })
+
+  $(document).ready(function(){
+    $('#goods').on('click',function(){
+      $('#itm_type').val('Goods')
+    })
+  })
+
+  $(document).ready(function(){
+    $('#service').on('click',function(){
+      $('#itm_type').val('Service')
+    })
+  })
+
+  $("#unitmodalsubmit").click(function () {
+    $.ajax({
+      type: "POST", 
+      url: "{% url 'create_unit' %}",
+      data: {
+        unit_name:document.getElementById('unit_name').value
+      },
+      beforeSend: function (xhr, settings) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+      },
+      success: function (response) {
+          $("#unitmodal").hide();
+          $(".modal-backdrop").remove();
+          document.getElementById('unit_name').value = ''
+          var dropdown = $('#unit');
+          dropdown.append(`<option value='${response.unit_name}'>${response.unit_name}</option>`);
+      },
+    });
+  });
 </script>
 
 {% endblock content %}

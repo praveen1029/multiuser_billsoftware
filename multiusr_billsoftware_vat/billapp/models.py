@@ -53,7 +53,7 @@ class Unit(models.Model):
 class Transactions(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     company = models.ForeignKey(Company,on_delete= models.CASCADE,null=True,blank=True)
-    item = models.OneToOneField(Item,on_delete=models.CASCADE,null=True,blank=True)
+    item = models.ForeignKey(Item,on_delete=models.CASCADE,null=True,blank=True)
     trans_type = models.CharField(max_length=255)
     trans_invoice = models.IntegerField(null=True,blank=True)
     trans_name = models.CharField(max_length=255)
