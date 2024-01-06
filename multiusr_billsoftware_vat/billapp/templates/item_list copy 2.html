@@ -62,21 +62,15 @@
         cursor: pointer;
     }
 
-    .input_border{
-        border: 2px solid #68020F;
-        color: black;
-        font-weight: 900;
-    }
-
     .button_border{
         border: 1px solid #68020F;
         color: #68020F;
     }
 
-    .button_border:hover{
-        background-color:#68020F;
-        color: white;
-    }
+  .button_border:hover{
+    background-color:#68020F;
+    color: white;
+  }
 
 </style>
 
@@ -241,16 +235,8 @@
                                                             <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
-                                                            <li>
-                                                                <button type="button" data-bs-toggle="modal" data-bs-target="#editstockmodal" class="dropdown-item fw-bold tb hide_table_text_v"  onclick="trans_details('{{f.id}}')" >
-                                                                    <i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i>View / Edit
-                                                                </button>
-                                                            </li>
-                                                            <li>
-                                                                <button type="button" onclick="delete_transaction()" class="dropdown-item fw-bold tb hide_table_text_d" href="">
-                                                                    <span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete
-                                                                </button>
-                                                            </li>
+                                                        <li><button type="button" data-bs-toggle="modal" data-bs-target="#editstockmodal" class="dropdown-item fw-bold tb hide_table_text_v" ><i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i>View / Edit</button></li>
+                                                        <li><button type="button" onclick="delete_transaction()" class="dropdown-item fw-bold tb hide_table_text_d" href=""><span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete</button></li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -302,7 +288,7 @@
                     <form action="{% url 'adjust_stock' itm.id %}" method="post">
                         {% csrf_token %}
                         <div class="modal-header ps-4 pe-4 m-0">
-                            <div class="form-check form-switch d-lg-flex d-sm-flex mt-2">
+                            <div class="form-check form-switch d-lg-flex d-sm-none mt-2">
                                 <label id="lbl1" class="form-check-label fw-bolder text-black" for="flexSwitchCheckChecked">ADD STOCK</label>
                                 <input class="form-check-input fs-5 ms-2 me-2" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="trans_type" style="border: 1px solid #68020F;">
                                 <label id="lbl2" class="form-check-label fw-bolder text-black" for="flexSwitchCheckChecked">REDUCE STOCK</label>
@@ -319,26 +305,26 @@
                                     <div class="col-sm-12 col-lg-4"></div>
                                     <div class="col-sm-12 col-lg-4">
                                         <label for="" class="text-black">ADJUSTMENT DATE</label>
-                                        <input id="adj_date" class="form-control input_border" type="date" value="" name="trans_date">
+                                        <input id="adj_date" style="font-weight: 900;color: black; border: 2px solid #68020F;" class="form-control" type="date" value="" name="trans_date">
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-12 col-lg-4">
                                         <label for="" class="text-black">ITEM QUANTITY</label>
-                                        <input id="item_quantity" value="{{ itm.itm_stock_in_hand }}" class="form-control fs-5 input_border" name="item_qty" readonly>
+                                        <input id="item_quantity" style="font-weight: 900;color: black; border: 2px solid #68020F;" value="{{ itm.itm_stock_in_hand }}" readonly class="form-control fs-5" name="item_qty">
                                     </div>
                                     <div id="add__qty" class="col-sm-12 col-lg-4">
                                         <label for="" class="text-black">ADD QUANTITY</label>
-                                        <input id="add_quantity" min="0" class="form-control fs-5 input_border" type="number" value="0" name="added_qty" required>
+                                        <input id="add_quantity" style="font-weight: 900;color: black; border: 2px solid #68020F;" min="0" class="form-control fs-5" type="number" value="0" required name="added_qty">
                                     </div>
                                     <div id="red__qty" class="col-sm-12 col-lg-4">
                                         <label for="" class="text-black">REDUCE QUANTITY</label>
-                                        <input id="reduce_quantity" max="{{ itm.itm_stock_in_hand }}" class="form-control fs-5 input_border" type="number" value="0" name="reduced_qty" required>
+                                        <input id="reduce_quantity" style="font-weight: 900;color: black; border: 2px solid #68020F;" max="{{ itm.itm_stock_in_hand }}" class="form-control fs-5" type="number" value="0" required name="reduced_qty">
                                     </div>
                                     <div class="col-sm-12 col-lg-4">
                                         <label for="" class="text-black">ADJUSTED QUANTITY</label>
-                                        <input id="adj_quantity" class="form-control fs-5 input_border" type="number" value="0" name="adjusted_qty" readonly>
+                                        <input id="adj_quantity" style="font-weight: 900;color: black; border: 2px solid #68020F;" class="form-control fs-5" type="number" value="0" readonly name="adjusted_qty">
                                     </div>
                                 </div>
                             </div>
@@ -361,55 +347,23 @@
                     <h5 class="modal-title" id="editstockmodalLabel" style="color: #68020F; font-weight: 900;">STOCK ADJUSTMENT</h5>
                 </div>
                 <div class="modal-body">
-                    <form method="post">
+                    <form action="{% url 'adjust_stock' itm.id %}" method="post">
                         {% csrf_token %}
                         <div class="modal-header ps-4 pe-4 m-0">
-                            <div class="form-check form-switch d-lg-flex d-sm-flex mt-2">
-                                <label id="lbl1" class="form-check-label fw-bolder text-black" for="trans_stock_change">ADD STOCK</label>
-                                <input class="form-check-input fs-5 ms-2 me-2" type="checkbox" role="switch" id="trans_stock_change" name="trans_type" style="border: 1px solid #68020F;">
-                                <label id="lbl2" class="form-check-label fw-bolder text-black" for="trans_stock_change">REDUCE STOCK</label>
+                            <div class="form-check form-switch d-lg-flex d-sm-none mt-2">
+                                <label id="lbl1" class="form-check-label fw-bolder text-black" for="flexSwitchCheckChecked">ADD STOCK</label>
+                                <input class="form-check-input fs-5 ms-2 me-2" type="checkbox" role="switch" id="flexSwitchCheckChecked" name="trans_type" style="border: 1px solid #68020F;">
+                                <label id="lbl2" class="form-check-label fw-bolder text-black" for="flexSwitchCheckChecked">REDUCE STOCK</label>
                             </div>
                         </div>
                         <div class="modal-body">
                             <hr class="mt-0 pt-0 ms-3 me-3">
-                            <div class="ps-3 pe-3">
-                                <div class="row">
-                                    <div class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">ITEM NAME</label>
-                                        <h5 style="font-weight: 900; " class="pt-2 text-black" id="trans_itm_name"></h3>
-                                        <input type="text" id="trans_id" hidden>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4"></div>
-                                    <div class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">ADJUSTMENT DATE</label>
-                                        <input id="trans_itm_date" class="form-control input_border" type="date" name="trans_itm_date">
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">ITEM QUANTITY</label>
-                                        <input id="trans_item_quantity" class="form-control fs-5 input_border" name="trans_item_quantity" readonly>
-                                    </div>
-                                    <div id="trans_add_qty" class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">ADD QUANTITY</label>
-                                        <input id="trans_add_quantity" min="0" class="form-control fs-5 input_border" type="number" name="trans_add_quantity" required>
-                                    </div>
-                                    <div id="trans_red_qty" class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">REDUCE QUANTITY</label>
-                                        <input id="trans_reduce_quantity" max="{{ itm.itm_stock_in_hand }}" class="form-control fs-5 input_border" type="number" name="trans_reduce_quantity" required>
-                                    </div>
-                                    <div class="col-sm-12 col-lg-4">
-                                        <label for="" class="text-black">ADJUSTED QUANTITY</label>
-                                        <input id="trans_adj_quantity" class="form-control fs-5 input_border" type="number" name="trans_adj_quantity" readonly>
-                                    </div>
-                                </div>
-                            </div>
+
                             <hr class="m-0 mt-4 p-0  ms-3 me-3">
                         </div>
                         <div class="modal-footer ps-4 pe-4 ">
                             <button id="cls_btn" type="button" class="btn button_border" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn button_border" id="transmodalsubmit">Update</button>
+                            <button type="submit" class="btn button_border" onclick="submit_function()">Save Changes</button>
                         </div>
                     </form>
                 </div>
@@ -422,69 +376,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
-
-    <script>
-        function trans_details(id) {
-            $.ajax({
-                type: "POST", 
-                url: "{% url 'load_trans_details' %}",
-                data: {
-                    'id':id
-                },
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-                },
-                success: function (response) {
-                    document.getElementById('trans_itm_name').innerText = response.name
-                    $('#trans_id').val(response.trans_id)
-                    $('#trans_itm_date').val(response.date)
-                    $('#trans_item_quantity').val(response.current_qty)
-                    if(response.trans_type == 'Stock Reduction'){
-                        document.getElementById('trans_stock_change').checked = true
-                        $('#trans_add_qty').attr('hidden',true)
-                        $('#trans_red_qty').attr('hidden',false)
-                        $('#trans_reduce_quantity').val(response.qty)
-                    }else{
-                        $('#trans_add_qty').attr('hidden',false)
-                        $('#trans_red_qty').attr('hidden',true)
-                        $('#trans_add_quantity').val(response.qty)
-                    }
-                    $('#trans_adj_quantity').val(response.adj_qty)
-                },
-            });
-        }
-    </script>
-
-    <script>
-        $("#transmodalsubmit").click(function () {
-            if($('#trans_stock_change').prop('checked')){
-                stock_change = 'Stock Reduction'
-                stock_value = document.getElementById('trans_reduce_quantity').value
-            }else{
-                stock_change = 'Stock Addition'
-                stock_value = document.getElementById('trans_add_quantity').value
-            }
-
-            $.ajax({
-                type: "POST", 
-                url: "{% url 'edit_transactions' %}",
-                data: {
-                    id : document.getElementById('trans_id').value,
-                    trans_stock_change : stock_change,
-                    trans_itm_date : document.getElementById('trans_itm_date').value,
-                    trans_item_quantity : document.getElementById('trans_item_quantity').value,
-                    stock_value : stock_value,
-                    trans_adj_quantity : document.getElementById('trans_adj_quantity').value,
-                },
-                beforeSend: function (xhr, settings) {
-                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-                },
-                success: function (response) {
-                    window.location.reload(true);
-                },
-            });
-        });
-    </script>
 
     <script>
         $(document).ready(function() {
@@ -511,7 +402,6 @@
                 $('#sbmt_btn').click()
             },200)
         }
-
         $(document).ready(function(){
             var currentDate = new Date();
             var year = currentDate.getFullYear();
@@ -520,7 +410,6 @@
             var formattedDate = year + "-" + month + "-" + day;
             $("#adj_date").val(formattedDate);
         })
-
         $(document).ready(function(){
             $('#add_quantity').on('input',function(){
                 var a = $('#add_quantity').val()
@@ -535,7 +424,6 @@
                 }
             })
         })
-
         $(document).ready(function(){
             $('#reduce_quantity').on('input',function(){
                 var a = $('#reduce_quantity').val()
@@ -555,7 +443,6 @@
                 }
             })
         })
-
         $(document).ready(function(){
             if(!$('#flexSwitchCheckChecked').prop('checked'))
             {
@@ -585,73 +472,6 @@
                     $('#add_quantity').val(0)
                     $('#reduce_quantity').val(0)
                     $('#adj_quantity').val(0)
-                }
-            })
-        })
-
-        $(document).ready(function(){
-            $('#trans_add_quantity').on('input',function(){
-                var a = $('#trans_add_quantity').val()
-                var b = $('#trans_item_quantity').val()
-                if(a<0)
-                {
-                    $('#trans_add_quantity').val(0)
-                    $('#trans_adj_quantity').val(parseInt(b))
-                }
-                else{
-                    $('#trans_adj_quantity').val(parseInt(a)+parseInt(b))
-                }
-            })
-        })
-        $(document).ready(function(){
-            $('#trans_reduce_quantity').on('input',function(){
-                var a = $('#trans_reduce_quantity').val()
-                var b = $('#trans_item_quantity').val()
-                if(a<0)
-                {
-                    $('#trans_reduce_quantity').val(0)
-                    $('#trans_adj_quantity').val(b)
-                }
-                if(parseInt(a)>parseInt(b))
-                {
-                    $('#trans_reduce_quantity').val(b)
-                    $('#trans_adj_quantity').val(0)
-                }
-                else{
-                    $('#trans_adj_quantity').val(parseInt(b)-parseInt(a))
-                }
-            })
-        })
-
-        $(document).ready(function(){
-            if(!$('#trans_stock_change').prop('checked'))
-            {
-                $('#trans_red_qty').attr('hidden',true)
-                $('#trans_add_qty').attr('hidden',false)
-                $('#trans_reduce_quantity').val(0)
-                $('#trans_add_quantity').val(0)
-            }
-            else{
-                $('#trans_add_qty').attr('hidden',true)
-                $('#trans_red_qty').attr('hidden',false)
-                $('#trans_add_quantity').val(0)
-                $('#trans_reduce_quantity').val(0)
-            }
-            $('#trans_stock_change').on('change',function(){
-                if(!$('#trans_stock_change').prop('checked'))
-                {
-                    $('#trans_red_qty').attr('hidden',true)
-                    $('#trans_add_qty').attr('hidden',false)
-                    $('#trans_reduce_quantity').val(0)
-                    $('#trans_add_quantity').val(0)
-                    $('#trans_adj_quantity').val(0)
-                }
-                else{
-                    $('#trans_add_qty').attr('hidden',true)
-                    $('#trans_red_qty').attr('hidden',false)
-                    $('#trans_add_quantity').val(0)
-                    $('#trans_reduce_quantity').val(0)
-                    $('#trans_adj_quantity').val(0)
                 }
             })
         })

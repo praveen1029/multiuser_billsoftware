@@ -416,3 +416,114 @@ def create_unit(request):
     unit = Unit(company=cmp, unit_name=unit_name)    
     unit.save()
     return JsonResponse({'message': 'success','unit_name':unit_name})
+  
+def load_item_edit(request,id):
+  itm = Item.objects.get(id=id)
+  context = {'itm':itm}
+  return render(request,'item_edit.html',context)
+  
+def item_edit(request,id):
+  if request.method == 'POST':
+    itm = Item.objects.get(id=id)
+    itm.itm_type = request.POST.get('itm_type')
+    itm.itm_name = request.POST.get('name')
+    itm.itm_hsn = request.POST.get('hsn')
+    itm.itm_unit = request.POST.get('unit')
+    itm.itm_vat = request.POST.get('vat')
+    itm.itm_taxable = request.POST.get('taxable_result')
+    itm.itm_sale_price = request.POST.get('sale_price')
+    itm.itm_purchase_price = request.POST.get('purchase_price')
+
+    stock_in_hand = request.POST.get('stock_in_hand')
+    if stock_in_hand == '' or None :
+      stock_in_hand = 0
+    itm.itm_stock_in_hand = stock_in_hand
+
+    itm_at_price = request.POST.get('at_price')
+    if itm_at_price == '' or None:
+      itm_at_price = 0
+    itm.itm_at_price = itm_at_price
+
+    itm.itm_date = request.POST.get('itm_date')
+    itm.save()
+
+    trans = Transactions.objects.get(item=itm, trans_type='Stock Open')
+    trans.trans_current_qty = stock_in_hand
+    trans.trans_adjusted_qty = stock_in_hand
+    trans.trans_price = itm_at_price
+    trans.trans_date = request.POST.get('itm_date')
+    trans.save()
+    if request.POST.get('save_and_next'):
+      return redirect('load_item_create')
+    elif request.POST.get('save'):
+      return redirect('item_list',id)
+    
+def load_trans_details(request):
+  id = request.POST.get('id')
+  trans = Transactions.objects.get(id=id)
+  trans_id = trans.id
+  name = trans.item.itm_name
+  date = trans.trans_date.strftime("%Y-%m-%d")
+  current_qty = trans.trans_current_qty
+  qty = trans.trans_qty
+  adj_qty = trans.trans_adjusted_qty
+  trans_type = trans.trans_type
+  return JsonResponse({'message': 'success',
+                       'trans_id':trans_id,
+                       'name':name, 
+                       'date':date,
+                       'current_qty':current_qty, 
+                       'qty':qty, 
+                       'adj_qty':adj_qty, 
+                       'trans_type':trans_type})
+
+def edit_adjust_stock(request,id):
+  if request.method=='POST':
+    itm = Item.objects.get(id=id)
+    if request.user.is_company:
+      cmp = request.user.company
+    else:
+      cmp = request.user.employee.company
+
+    trans_type = request.POST.get('trans_type')
+    if trans_type == 'on':
+      trans_type = 'Stock Reduction'
+      trans_qty = request.POST.get('reduced_qty')
+    else:
+      trans_type = 'Stock Addition'
+      trans_qty = request.POST.get('added_qty')
+    trans_date = request.POST.get('trans_date')
+
+    adjusted_qty= request.POST.get('adjusted_qty')
+    current_qty = request.POST.get('item_qty')
+    itm.itm_stock_in_hand = adjusted_qty
+    itm.save()
+    trans = Transactions(user=request.user,
+                          company=cmp,
+                          item=itm,
+                          trans_type=trans_type,
+                          trans_date=trans_date,
+                          trans_qty=trans_qty,
+                          trans_price=itm.itm_at_price,
+                          trans_current_qty=current_qty,
+                          trans_adjusted_qty=adjusted_qty)
+    trans.save()
+  return redirect('item_list',id)
+
+def edit_transactions(request):
+  if request.method=='POST':
+    id = request.POST.get('id')
+    trans_stock_change = request.POST.get('trans_stock_change')
+    trans_itm_date = request.POST.get('trans_itm_date')
+    trans_item_quantity = request.POST.get('trans_item_quantity')
+    stock_value = request.POST.get('stock_value')
+    trans_adj_quantity = request.POST.get('trans_adj_quantity')
+
+    trans = Transactions.objects.get(id=id)
+    trans.trans_type = trans_stock_change
+    trans.trans_date = trans_itm_date
+    trans.trans_qty = stock_value 
+    trans.trans_current_qty = trans_item_quantity
+    trans.trans_adjusted_qty = trans_adj_quantity
+    trans.save()
+    return redirect('item_list_first')

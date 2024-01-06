@@ -34,5 +34,9 @@ urlpatterns = [
     path('item_create',views.item_create,name='item_create'),  
     path('adjust_stock/<int:id>',views.adjust_stock,name='adjust_stock'),  
     path('create_unit',views.create_unit,name='create_unit'),  
+    path('load_item_edit/<int:id>',views.load_item_edit,name='load_item_edit'),  
+    path('item_edit/<int:id>',views.item_edit,name='item_edit'),  
+    path('load_trans_details',views.load_trans_details,name='load_trans_details'),  
+    path('edit_transactions',views.edit_transactions,name='edit_transactions'),  
 
 ]
