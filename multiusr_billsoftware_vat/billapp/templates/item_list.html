@@ -268,30 +268,6 @@
         </div>
     </div>
 
-{% else %}
-    <div class="body-wrapper" >
-        <br><br><br>
-        <div class="p-5 text-center" style="display: flex;justify-content: center;">
-            <div class="card " style="background-color: #FFD6D7;width:50rem;box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.249);">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12">
-                        <div class="rounded pt-3" style="border: 1px solid rgba(0, 0, 0, 0);border-bottom: none;">
-                            <h1 style="font-weight:900;color:rgba(0, 0, 0, 0.644);font-size: 1.5rem;">MULTIUSER BILLING SOFTWARE</h1>
-                            <p class="card-text">Welcome to Multiuser Billing Software, We're committed to providing a seamless and secure online marketplace for buyers and sellers. Our platform offers a range of features.</p>
-                            <p style="color: rgb(0, 89, 10);font-weight: light;" class="card-text">You can manage all you items here.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-3"></div>
-                    <div class="col-sm-12 col-md-6 pb-3">
-                        <img  src="{% static 'img/item-empty.jpg' %}" class="card-img" alt="no img">
-                        <a class="btn btn-lg" href="{% url 'load_item_create' %}" id="add_btn">Add Your First Item</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endif %} 
-
     <div class="modal fade" id="stockmodal">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
             <div class="modal-content" >
@@ -416,6 +392,32 @@
             </div>
         </div>
     </div>
+
+{% else %}
+    <div class="body-wrapper" >
+        <br><br><br>
+        <div class="p-5 text-center" style="display: flex;justify-content: center;">
+            <div class="card " style="background-color: #FFD6D7;width:50rem;box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.249);">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="rounded pt-3" style="border: 1px solid rgba(0, 0, 0, 0);border-bottom: none;">
+                            <h1 style="font-weight:900;color:rgba(0, 0, 0, 0.644);font-size: 1.5rem;">MULTIUSER BILLING SOFTWARE</h1>
+                            <p class="card-text">Welcome to Multiuser Billing Software, We're committed to providing a seamless and secure online marketplace for buyers and sellers. Our platform offers a range of features.</p>
+                            <p style="color: rgb(0, 89, 10);font-weight: light;" class="card-text">You can manage all you items here.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-sm-12 col-md-6 pb-3">
+                        <img  src="{% static 'img/item-empty.jpg' %}" class="card-img" alt="no img">
+                        <a class="btn btn-lg" href="{% url 'load_item_create' %}" id="add_btn">Add Your First Item</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %} 
+
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
