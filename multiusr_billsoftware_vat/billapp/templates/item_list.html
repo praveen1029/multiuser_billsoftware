@@ -123,11 +123,11 @@
                                                             <ul class="dropdown-menu">
                                                                 <li>
                                                                     <a class="dropdown-item fw-bold tb" href="{% url 'load_item_edit' i.id %}">
-                                                                        <i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i>View / Edit
+                                                                        <i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i> View / Edit
                                                                     </a>
                                                                 </li>
                                                                 <li>
-                                                                    <a class="dropdown-item fw-bold tb" type="button" onclick="confirm_delete()">
+                                                                    <a class="dropdown-item fw-bold tb" href="{% url 'delete_item' i.id %}" type="button">
                                                                         <span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete
                                                                     </a>
                                                                 </li>
@@ -147,6 +147,16 @@
             </div>
             <div class="col-sm-12 col-lg-9  ps-2 pe-3" style="height: 80%;">
                 <div id="item_get_detail_target">
+                    {% for message in messages %}
+                    <h5>
+                        <div class="alert alert-danger mt-5 message text-center" style="color: black;">
+                            {{ message }}
+                            <a type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+                                <span aria-hidden="true" style="font-size: large; color: #68020F;">&times;</span>
+                            </a>
+                        </div>
+                    </h5>
+                    {% endfor %}
                     <div class="row m-0" style="height:20%">
                         <div class="p-3 mb-3">
                             <div class="p-4" style="background-color: #FFADB0; border-radius: 1vh;">
@@ -159,11 +169,11 @@
                                 <p></p>
                                 <div class="d-flex justify-content-between" style="color: black;">
                                     <p class="tb fw-bolder fs-2">SALE PRICE  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp;  ₹{{ itm.itm_sale_price }}</span></p>
-                                    <p class="tb fw-bolder fs-2">STOCK QUANTITY  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp; {{ itm.itm_stock_in_hand }}</span></p>
+                                    <p class="tb fw-bolder fs-2">STOCK QUANTITY  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp; {{ itm.itm_stock_in_hand }} {{itm.itm_unit}}</span></p>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <p class="tb fw-bolder fs-2">PURCHASE PRICE  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp; ₹{{ itm.itm_purchase_price }}</span></p>
-                                    <p class="tb fw-bolder fs-2">STOCK VALUE  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp; ₹{{ itm.itm_at_price }}</span></p>
+                                    <p class="tb fw-bolder fs-2">STOCK VALUE  <span class="ps-2 tg" style="color: black;"> - &nbsp;&nbsp; ₹ <span id="stock_val"></span></span></p>
                                 </div>
                             </div>
                             <hr style="height: .5%;">
@@ -211,45 +221,50 @@
                                                 <td class="text-center"></td>
                                                 <td class="text-center"></td>
                                                 <td class="text-center">{{  f.trans_date|date:"d-m-Y" }}</td>
-                                                <td class="text-center">{{ f.trans_adjusted_qty }}</td>
+                                                <td class="text-center">{{ f.trans_qty }}</td>
                                                 <td class="text-center">{{ f.trans_price }}</td>
                                                 {% if f.trans_type == 'Stock Open' %}
-                                                <td class="p-0 pt-1 m-0">
+                                                <td class="p-0 pt-1 m-0" style="text-align: center;">
                                                     <div class="btn-group mb-1">
                                                         <button style="border: none;background: none;" type="button" class="ropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li>
+                                                                <a type="button" class="dropdown-item fw-bold tb" href="{% url 'load_itm_trans_history' f.id %}" >
+                                                                    <i class="fa fa-history" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ; color: green;"></i>History
+                                                                </a>
+                                                            </li>
+                                                            <li>
                                                                 <a type="btn" class="dropdown-item fw-bold tb hide_table_text_v" href="{% url 'load_item_edit' f.item.id %}">
                                                                     <i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i>
                                                                     View / Edit
                                                                 </a>
                                                             </li>
-                                                            <li>
-                                                                <button type="button" onclick="delete_transaction()" class="dropdown-item fw-bold tb hide_table_text_d" href="">
-                                                                    <span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete
-                                                                </button>
-                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
                                                 {% else %}
-                                                <td class="p-0 pt-1 m-0">
+                                                <td class="p-0 pt-1 m-0" style="text-align: center;">
                                                     <div class="btn-group mb-1">
                                                         <button style="border: none;background: none;" type="button" class="dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <span class="fa fa-ellipsis-v text-dark fs-1 ps-"></span>
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li>
+                                                                <a type="button" class="dropdown-item fw-bold tb" href="{% url 'load_itm_trans_history' f.id %}" >
+                                                                    <i class="fa fa-history" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ; color: green;"></i>History
+                                                                </a>
+                                                            </li>
+                                                            <li>
                                                                 <button type="button" data-bs-toggle="modal" data-bs-target="#editstockmodal" class="dropdown-item fw-bold tb hide_table_text_v"  onclick="trans_details('{{f.id}}')" >
                                                                     <i class="material-icons text-primary" style="font-size: 15px; padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;">edit</i>View / Edit
                                                                 </button>
                                                             </li>
                                                             <li>
-                                                                <button type="button" onclick="delete_transaction()" class="dropdown-item fw-bold tb hide_table_text_d" href="">
+                                                                <a type="button" class="dropdown-item fw-bold tb hide_table_text_d" href="{% url 'delete_transaction' f.id %}">
                                                                     <span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete
-                                                                </button>
+                                                                </a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -385,14 +400,13 @@
                         </div>
                         <div class="modal-footer ps-4 pe-4 ">
                             <button id="cls_btn" type="button" class="btn button_border" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn button_border" id="transmodalsubmit">Update</button>
+                            <button type="button" class="btn button_border" id="transmodalsubmit">Update</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 {% else %}
     <div class="body-wrapper" >
         <br><br><br>
@@ -401,8 +415,8 @@
                 <div class="row">
                     <div class="col-sm-12 col-md-12">
                         <div class="rounded pt-3" style="border: 1px solid rgba(0, 0, 0, 0);border-bottom: none;">
-                            <h1 style="font-weight:900;color:rgba(0, 0, 0, 0.644);font-size: 1.5rem;">MULTIUSER BILLING SOFTWARE</h1>
-                            <p class="card-text">Welcome to Multiuser Billing Software, We're committed to providing a seamless and secure online marketplace for buyers and sellers. Our platform offers a range of features.</p>
+                            <h1 style="font-weight:900;color:rgba(0, 0, 0, 0.644);font-size: 1.5rem;">MULTIUSER BILLING SOFTWARE - VAT</h1>
+                            <p class="card-text pt-2">Welcome to Multiuser Billing Software-VAT, Our platform offers a range of features.</p>
                             <p style="color: rgb(0, 89, 10);font-weight: light;" class="card-text">You can manage all you items here.</p>
                         </div>
                     </div>
@@ -424,6 +438,15 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log('{{itm.itm_purchase_price}}' * '{{itm.itm_at_price }}')
+            sval = '{{itm.itm_purchase_price}}' * '{{itm.itm_at_price }}'
+            var spn = document.getElementById('stock_val')
+            spn.textContent = sval
+        });
+    </script>
 
     <script>
         function trans_details(id) {
@@ -482,7 +505,8 @@
                     xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
                 },
                 success: function (response) {
-                    window.location.reload(true);
+                    console.log(1)
+                    location.reload(true);
                 },
             });
         });

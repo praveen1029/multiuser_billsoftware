@@ -36,7 +36,10 @@ urlpatterns = [
     path('create_unit',views.create_unit,name='create_unit'),  
     path('load_item_edit/<int:id>',views.load_item_edit,name='load_item_edit'),  
     path('item_edit/<int:id>',views.item_edit,name='item_edit'),  
+    path('delete_item/<int:id>',views.delete_item,name='delete_item'),  
     path('load_trans_details',views.load_trans_details,name='load_trans_details'),  
     path('edit_transactions',views.edit_transactions,name='edit_transactions'),  
+    path('delete_transaction/<int:id>',views.delete_transaction,name='delete_transaction'),  
+    path('load_itm_trans_history/<int:id>',views.load_itm_trans_history,name='load_itm_trans_history'),  
 
 ]

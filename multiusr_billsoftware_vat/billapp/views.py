@@ -41,7 +41,11 @@ def register_company(request):
 
     if passw == cpass:
       if CustomUser.objects.filter(username = uname).exists():
-        messages.info(request, 'Sorry, Username already exists !!')
+        messages.info(request, 'Sorry, Username already in Use !!')
+        return redirect('cmp_register')
+      
+      elif Company.objects.filter(contact = phno).exists():
+        messages.info(request, 'Sorry, Phone Number already in Use !!')
         return redirect('cmp_register')
 
       elif not CustomUser.objects.filter(email = email).exists():
@@ -51,7 +55,7 @@ def register_company(request):
         return redirect('cmp_details',user_data.id)
 
       else:
-        messages.info(request, 'Sorry, Email already exists !!')
+        messages.info(request, 'Sorry, Email already in Use !!')
         return redirect('cmp_register')
       
     messages.info(request, 'Sorry, Passwords must match !!')
@@ -68,6 +72,14 @@ def register_company_details(request,id):
     pannumber = request.POST['pannumber']
     gsttype = request.POST['gsttype']
     gstno = request.POST['gstno']
+
+    if Company.objects.filter(pan_number = pannumber).exclude(pan_number='').exists():
+      messages.info(request, 'Sorry, Pan number is already in Use !!')
+      return redirect('cmp_details',id)
+    
+    if Company.objects.filter(gst_no = gstno).exclude(gst_no='').exists():
+      messages.info(request, 'Sorry, GST number is already in Use !!')
+      return redirect('cmp_details',id)
 
     code=get_random_string(length=6)
 
@@ -114,6 +126,10 @@ def register_employee(request):
       if CustomUser.objects.filter(username = uname).exists():
         messages.info(request, 'Sorry, Username already exists !!')
         return redirect('emp_register')
+      
+      elif Employee.objects.filter(contact = phno).exists():
+        messages.info(request, 'Sorry, Phone Number already in Use !!')
+        return redirect('emp_register')
 
       elif not CustomUser.objects.filter(email = email).exists():
         user_data = CustomUser.objects.create_user(first_name = fname, last_name = lname, username = uname, email = email, password = passw)
@@ -132,7 +148,7 @@ def change_password(request):
   if request.method == 'POST':
     email= request.POST.get('email')
     if not CustomUser.objects.filter(email=email).exists():
-      messages.success(request,'No user found with this email !!')
+      messages.success(request,'Sorry, No user found with this email !!')
       return redirect('forgot_password')
     
     else:
@@ -202,8 +218,24 @@ def edit_cmp_profile(request):
     current_email = cmp.user.email
     if email != current_email:
       if CustomUser.objects.filter(email=email).exists():
-        messages.info(request,'Email Already in Use')
+        messages.info(request,'Sorry, Email Already in Use !!')
         return redirect('load_edit_cmp_profile')
+      
+    phno_list = list(filter(None,Company.objects.exclude(user = request.user).values_list('contact', flat=True)))
+    gst_list = list(filter(None,Company.objects.exclude(user = request.user).values_list('pan_number', flat=True)))
+    gno_list = list(filter(None,Company.objects.exclude(user = request.user).values_list('gst_no', flat=True)))
+
+    if request.POST['phno'] in phno_list:
+      messages.info(request,'Sorry, Phone number already in Use !!')
+      return redirect('load_edit_cmp_profile')
+
+    if request.POST['pan'] in gst_list:
+      messages.info(request,'Sorry, PAN number already in Use !!')
+      return redirect('load_edit_cmp_profile')
+
+    if request.POST['gstnoval'] in gno_list:
+      messages.info(request,'Sorry, GST number already in Use !!')
+      return redirect('load_edit_cmp_profile')
 
     cmp.company_name = request.POST['cname']
     cmp.user.email = request.POST['email']
@@ -248,6 +280,12 @@ def edit_emp_profile(request):
       if CustomUser.objects.filter(email=email).exists():
         messages.info(request,'Email Already in Use')
         return redirect('load_edit_emp_profile')
+          
+    phno_list = list(Employee.objects.exclude(user = request.user).values_list('contact', flat=True))
+
+    if request.POST['phno'] in phno_list:
+      messages.info(request,'Sorry, Phone number already in Use !!')
+      return redirect('load_edit_emp_profile')
 
     emp.user.email = request.POST['email']
     emp.user.first_name = request.POST['fname']
@@ -284,7 +322,9 @@ def accept_staff(request,id):
   return redirect('load_staff_request')
 
 def reject_staff(request,id):
-  Employee.objects.get(id=id).delete()
+  emp = Employee.objects.get(id=id)
+  emp.user.delete()
+  emp.delete()
   messages.info(request,'Employee Deleted !!')
   return redirect('load_staff_request')
 
@@ -296,7 +336,7 @@ def item_list_first(request):
   
   if itm_list:
     itm = itm_list[0]
-    trans = Transactions.objects.filter(item = itm)
+    trans = ItemTransactions.objects.filter(item = itm)
     context = {'itm_list':itm_list, 'usr':request.user, 'itm':itm, 'trans':trans}
   else:
     context = {'itm_list':itm_list, 'usr':request.user}
@@ -309,7 +349,7 @@ def item_list(request,id):
     itm_list = Item.objects.filter(company = request.user.employee.company)
   
   itm = Item.objects.get(id=id)
-  trans = Transactions.objects.filter(item=itm.id)
+  trans = ItemTransactions.objects.filter(item=itm.id)
   context = {'itm_list':itm_list, 'usr':request.user, 'itm':itm, 'trans':trans}
   return render(request,'item_list.html',context) 
 
@@ -354,7 +394,7 @@ def item_create(request):
                 itm_date = itm_date)
     item.save()
 
-    trans = Transactions(user = request.user, item = item, trans_type = 'Stock Open', trans_date = itm_date, trans_qty = 0, trans_current_qty = stock_in_hand, 
+    trans = ItemTransactions(user = request.user, item = item, trans_type = 'Stock Open', trans_date = itm_date, trans_qty = 0, trans_current_qty = stock_in_hand, 
                          trans_adjusted_qty = stock_in_hand, trans_price = itm_at_price)
 
     if request.user.is_company:
@@ -367,6 +407,10 @@ def item_create(request):
  
     item.save()
     trans.save()
+
+    trhis = ItemTransactionsHistory(user = request.user, transaction = trans, hist_trans_qty = 0, hist_trans_current_qty = stock_in_hand, action = 'Created',
+                      hist_trans_adjusted_qty = stock_in_hand)
+    trhis.save()
 
     if request.POST.get('save_and_next'):
       return redirect('load_item_create')
@@ -394,16 +438,20 @@ def adjust_stock(request,id):
     current_qty = request.POST.get('item_qty')
     itm.itm_stock_in_hand = adjusted_qty
     itm.save()
-    trans = Transactions(user=request.user,
+    trans = ItemTransactions(user=request.user,
                           company=cmp,
                           item=itm,
                           trans_type=trans_type,
                           trans_date=trans_date,
                           trans_qty=trans_qty,
-                          trans_price=itm.itm_at_price,
                           trans_current_qty=current_qty,
                           trans_adjusted_qty=adjusted_qty)
     trans.save()
+
+    trhis = ItemTransactionsHistory(user = request.user, transaction = trans, hist_trans_qty = trans_qty, hist_trans_current_qty = current_qty, action = 'Created',
+                      hist_trans_adjusted_qty = adjusted_qty)
+    trhis.save()
+
   return redirect('item_list',id)
 
 def create_unit(request):
@@ -419,7 +467,7 @@ def create_unit(request):
   
 def load_item_edit(request,id):
   itm = Item.objects.get(id=id)
-  context = {'itm':itm}
+  context = {'usr':request.user, 'itm':itm}
   return render(request,'item_edit.html',context)
   
 def item_edit(request,id):
@@ -447,12 +495,16 @@ def item_edit(request,id):
     itm.itm_date = request.POST.get('itm_date')
     itm.save()
 
-    trans = Transactions.objects.get(item=itm, trans_type='Stock Open')
+    trans = ItemTransactions.objects.get(item=itm, trans_type='Stock Open')
     trans.trans_current_qty = stock_in_hand
     trans.trans_adjusted_qty = stock_in_hand
-    trans.trans_price = itm_at_price
     trans.trans_date = request.POST.get('itm_date')
     trans.save()
+    
+    trhis = ItemTransactionsHistory(user = request.user, transaction = trans, hist_trans_qty = 0, hist_trans_current_qty = stock_in_hand, action = 'Updated',
+                      hist_trans_adjusted_qty = stock_in_hand)
+    trhis.save()
+
     if request.POST.get('save_and_next'):
       return redirect('load_item_create')
     elif request.POST.get('save'):
@@ -460,7 +512,7 @@ def item_edit(request,id):
     
 def load_trans_details(request):
   id = request.POST.get('id')
-  trans = Transactions.objects.get(id=id)
+  trans = ItemTransactions.objects.get(id=id)
   trans_id = trans.id
   name = trans.item.itm_name
   date = trans.trans_date.strftime("%Y-%m-%d")
@@ -477,39 +529,6 @@ def load_trans_details(request):
                        'adj_qty':adj_qty, 
                        'trans_type':trans_type})
 
-def edit_adjust_stock(request,id):
-  if request.method=='POST':
-    itm = Item.objects.get(id=id)
-    if request.user.is_company:
-      cmp = request.user.company
-    else:
-      cmp = request.user.employee.company
-
-    trans_type = request.POST.get('trans_type')
-    if trans_type == 'on':
-      trans_type = 'Stock Reduction'
-      trans_qty = request.POST.get('reduced_qty')
-    else:
-      trans_type = 'Stock Addition'
-      trans_qty = request.POST.get('added_qty')
-    trans_date = request.POST.get('trans_date')
-
-    adjusted_qty= request.POST.get('adjusted_qty')
-    current_qty = request.POST.get('item_qty')
-    itm.itm_stock_in_hand = adjusted_qty
-    itm.save()
-    trans = Transactions(user=request.user,
-                          company=cmp,
-                          item=itm,
-                          trans_type=trans_type,
-                          trans_date=trans_date,
-                          trans_qty=trans_qty,
-                          trans_price=itm.itm_at_price,
-                          trans_current_qty=current_qty,
-                          trans_adjusted_qty=adjusted_qty)
-    trans.save()
-  return redirect('item_list',id)
-
 def edit_transactions(request):
   if request.method=='POST':
     id = request.POST.get('id')
@@ -519,11 +538,33 @@ def edit_transactions(request):
     stock_value = request.POST.get('stock_value')
     trans_adj_quantity = request.POST.get('trans_adj_quantity')
 
-    trans = Transactions.objects.get(id=id)
+    trans = ItemTransactions.objects.get(id=id)
     trans.trans_type = trans_stock_change
     trans.trans_date = trans_itm_date
     trans.trans_qty = stock_value 
     trans.trans_current_qty = trans_item_quantity
     trans.trans_adjusted_qty = trans_adj_quantity
     trans.save()
-    return redirect('item_list_first')
+    trans.item.itm_stock_in_hand = trans_adj_quantity
+    trans.item.save()
+
+    trhis = ItemTransactionsHistory(user = request.user, transaction = trans, hist_trans_qty = stock_value, hist_trans_current_qty = trans_item_quantity, action = 'Updated',
+                      hist_trans_adjusted_qty = trans_adj_quantity)
+    trhis.save()
+    return JsonResponse({'message': 'success'})
+
+def delete_item(request,id):
+  Item.objects.get(id=id).delete()
+  messages.info(request,'Item Deleted Successfully !!')
+  return redirect('item_list_first')
+
+def delete_transaction(request,id):
+  ItemTransactions.objects.get(id=id).delete()
+  messages.info(request,'Item Transaction Deleted Successfully !!')
+  return redirect('item_list_first')
+
+def load_itm_trans_history(request,id):
+  trans = ItemTransactions.objects.get(id=id)
+  trhis = ItemTransactionsHistory.objects.filter(transaction=trans)
+  context = {'usr':request.user, 'trans':trans, 'trhis':trhis}
+  return render(request,'item_transaction_history.html',context)

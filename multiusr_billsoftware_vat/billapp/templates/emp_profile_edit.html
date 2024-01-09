@@ -52,6 +52,31 @@
         } */
        
     }
+
+    .row_style{
+        background-color: #FFD6D7;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .input_style{
+        border:1px solid #062925; 
+        color:black;
+    }
+
+    #non_def_image{
+        width: 50%; 
+        margin-left: 27.5%;  
+        cursor: pointer; 
+        border:1px solid #062925;
+    }
+
+    #def_image{
+        width: 50%; 
+        margin-left: 27.5%; 
+        object-fit: cover; 
+        cursor: pointer; 
+        border:1px solid #062925;
+    }
 </style> 
 <body style="background-color: rgba(176, 199, 205, 0.4);">
     <div class="body-wrapper">
@@ -65,57 +90,61 @@
                         <div class="col-md-10">
                             {% for message in messages %}
                             <h5>
-                                <div class="alert alert-danger mt-5 message text-center">
+                                <div class="alert alert-danger mt-5 message text-center" style="color: black;">
                                     {{ message }}
+                                    <a type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+                                        <span aria-hidden="true" style="font-size: large; color: #68020F;">&times;</span>
+                                    </a>
                                 </div>
                             </h5>
                             {% endfor %}
-                            <div class="row mt-2 pt-4 p-3" style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row mt-2 pt-4 p-3 row_style">
                                 <div class="col-md-5 mt-5" id="label">
                                     <br><br><br>
                                     Profile Picture
                                 </div>
                                 <div class="col" id="imageContainer">
                                     {% if emp.profile_pic %}
-                                    <img src="{{ emp.profile_pic.url }}" alt="" style="width: 50%; margin-left: 27.5%;  cursor: pointer; border:1px solid #062925;" onchange="updateImage(event)">
+                                    <img src="{{ emp.profile_pic.url }}" id="non_def_image" alt="" onchange="updateImage(event)">
                                     {% else %}
-                                    <img src="{% static 'img/profile-pic.png' %}" alt="" style="width: 50%; margin-left: 27.5%; object-fit: cover; cursor: pointer; border:1px solid #062925;" onchange="updateImage(event)">
+                                    <img src="{% static 'img/profile-pic.png' %}" id="def_image" alt="" onchange="updateImage(event)">
                                     {% endif %}
                                     <input type="file" id="fileInput" name="image" accept="image/*" class="form-control" style="opacity: 0;">
                                     <br>
                                 </div>   
                             </div>
-                            <div class="row p-3" id="cname" style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row p-3 row_style" id="cname">
                                 <div class="col-md-5 mt-2" id="label">Company Name</div>
                                 <div class="col">
-                                    <input type="text" class="form-control" name="cname"  value="{{emp.company.company_name}}" style="border:1px solid #062925; color: black;" readonly>
+                                    <input type="text" class="form-control input_style" name="cname"  value="{{emp.company.company_name}}" readonly>
                                 </div>   
                             </div>
 
-                            <div class="row p-3"  style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row p-3 row_style" >
                                 <div class="col-md-5 mt-2" id="label">Employee First Name</div>
                                 <div class="col">
-                                    <input type="text" class="form-control" name="fname" id="fname" value="{{emp.user.first_name}}" style="border:1px solid #062925; color: black;" required>
+                                    <input type="text" class="form-control input_style" name="fname" id="fname" value="{{emp.user.first_name}}" required>
                                 </div>   
                             </div>
 
-                            <div class="row p-3"  style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row p-3 row_style" >
                                 <div class="col-md-5 mt-2" id="label">Employee Last Name</div>
                                 <div class="col">
-                                    <input type="text" class="form-control" name="lname" id="lname" value="{{emp.user.last_name}}" style="border:1px solid #062925; color: black;" required>
+                                    <input type="text" class="form-control input_style" name="lname" id="lname" value="{{emp.user.last_name}}" required>
                                 </div>   
                             </div>
                             
-                            <div class="row p-3" style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row p-3 row_style">
                                 <div class="col-md-5 pt-2" id="label">Employee Email</div>
                                 <div class="col pt-2">
-                                    <input type="text" class="form-control" name="email" id="email" value="{{emp.user.email}}" style="border:1px solid #062925; color: black;" required>
+                                    <input type="email" class="form-control input_style" name="email" id="email" value="{{emp.user.email}}" required>
                                 </div>
                             </div>
-                            <div class="row p-3" style="background-color: #FFD6D7;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); color: black;">
+                            <div class="row p-3 row_style">
                                 <div class="col-md-5 pt-4  pb-3 p-3" id="label">Employee Contact</div>
                                 <div class="col pt-3 pb-3">
-                                    <input type="text" class="form-control" name="phno" id="phno" value="{{emp.contact}}" style="border:1px solid #062925; color: black;" required>
+                                    <input type="text" class="form-control input_style" name="phno" id="phno" value="{{emp.contact}}" 
+                                    pattern="^\d{10}$" title="Phone Number need to be 10 Digits" required>
                                 </div>
                             </div>
                         </div>

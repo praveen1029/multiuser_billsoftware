@@ -50,7 +50,7 @@ class Unit(models.Model):
     company = models.ForeignKey(Company,on_delete=models.CASCADE,null=True,blank=True)
     unit_name = models.CharField(max_length=255)
 
-class Transactions(models.Model):
+class ItemTransactions(models.Model):
     user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
     company = models.ForeignKey(Company,on_delete= models.CASCADE,null=True,blank=True)
     item = models.ForeignKey(Item,on_delete=models.CASCADE,null=True,blank=True)
@@ -63,3 +63,16 @@ class Transactions(models.Model):
     trans_adjusted_qty = models.IntegerField(default=0)
     trans_price = models.IntegerField(default=0)
     trans_status = models.CharField(max_length=255)
+
+class ItemTransactionsHistory(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True,blank=True)
+    transaction = models.ForeignKey(ItemTransactions,on_delete=models.CASCADE,null=True,blank=True)
+    CHOICES = [
+        ('Created', 'Created'),
+        ('Updated', 'Updated'),
+    ]
+    action = models.CharField(max_length=20, choices=CHOICES)
+    hist_trans_date = models.DateTimeField(auto_now_add=True)
+    hist_trans_qty = models.IntegerField(default=0)
+    hist_trans_current_qty = models.IntegerField(default=0)
+    hist_trans_adjusted_qty = models.IntegerField(default=0)

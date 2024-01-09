@@ -32,9 +32,12 @@
 
     {% for message in messages %}
     <h5>
-        <div class="alert alert-dark text-light mt-2 message text-center">
-            {{ message }}
-        </div>
+      <div class="alert alert-danger mt-5 message text-center" style="color: black;">
+        {{ message }}
+        <a type="button" class="close" data-dismiss="alert" aria-label="Close" style="float: right;">
+            <span aria-hidden="true" style="font-size: large; color: #68020F;">&times;</span>
+        </a>
+    </div>
     </h5>
     {% endfor %}
 

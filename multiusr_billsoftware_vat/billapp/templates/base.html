@@ -45,6 +45,16 @@
         background-color: #68020F;
         color: white;
       }
+
+      .plus_circle {
+        margin-left: -11%;
+        font-size: large;
+        margin-top: 2%;
+      }
+
+      .sidebar-nav::-webkit-scrollbar { 
+        display: none;  /* Safari and Chrome */
+      }
     </style>
   </head>
 
@@ -63,7 +73,7 @@
               <i class="fa fa-close text-light"></i>
             </div>
           </div>
-          <nav class="sidebar-nav scroll-sidebar" data-simplebar="" >
+          <nav class="sidebar-nav scroll-sidebar pb-5" data-simplebar="" >
             <ul id="sidebarnav " >
               <li class="sidebar-item mt-3">
                 <a class="sidebar-link " href="{% url 'dashboard' %}" aria-expanded="false"
@@ -84,17 +94,23 @@
                   <i class="fa fa-caret-down" style="margin-left: 30%;"></i>
                 </button>
                 <div class="dropdown-container" style="background-color: transparent; padding: 20px;justify-content: center; color: white;">
-                  <a href="{% url 'load_staff_request' %}" class="d-flex align-items-center gap-2 dropdown-item">
-                    <div class="d-flex">
-                      <i class="material-icons">assignment</i>
-                      <p class="mb-0 fs-3">&nbsp;&nbsp;Staff Request</b>
-                    </div>
-                  </a>
+                  <div class="d-flex">
+                    <a href="{% url 'load_staff_request' %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <div class="d-flex">
+                        <i class="material-icons">assignment</i>
+                        <p class="mb-0 fs-3">&nbsp;&nbsp;Staff Request</b>
+                      </div>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
-                  <a href="{% url 'load_staff_list' %}" class="d-flex align-items-center gap-2 dropdown-item">
-                    <i class="material-icons">list</i>
-                    <p class="mb-0 fs-3">All Staff</p>
-                  </a>
+                  <div class="d-flex">
+                    <a href="{% url 'load_staff_list' %}" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="material-icons">list</i>
+                      <p class="mb-0 fs-3">All Staff</p>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
                 </div>
               </li>
@@ -119,14 +135,6 @@
               <li class="sidebar-item">
                 <button class="btn dropdown-btn" style="margin-top: 10px; border: none;outline: none; color: black;background-color: rgb(210, 235, 241,0.5);width: 100%;text-align: left;">
                   <span>
-                    <b><i class="fa fa-user" style="font-size: 20px;margin-right: 19px; color: white; margin-left: -3%;"></i></b>
-                  </span>
-                  <span style="margin-top: -10vh; color: white;"><b> &nbsp; Employees </b></span>
-                  <i class="fa fa-caret-down" style="margin-left: 30%;"></i>
-                </button>
-
-                <button class="btn dropdown-btn" style="margin-top: 10px; border: none;outline: none; color: black;background-color: rgb(210, 235, 241,0.5);width: 100%;text-align: left;">
-                  <span>
                     <b><i class="material-icons" style="font-size: 20px;margin-right: 19px; color: white; margin-left: -3%;">attach_money</i></b>
                   </span>
                   <span style="margin-top: -10vh; color: white;"><b> &nbsp; Sales </b></span>
@@ -134,15 +142,21 @@
                 </button>
     
                 <div class="dropdown-container" style="background-color: transparent; padding: 20px;justify-content: center; color: white;">
-                  <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                    <i class="material-icons">receipt</i>
-                    <p class="mb-0 fs-3">Invoices</p>
-                  </a>
+                  <div class="d-flex">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="material-icons">receipt</i>
+                      <p class="mb-0 fs-3">Invoices</p>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
-                  <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                    <i class="material-icons">credit_score</i>
-                    <p class="mb-0 fs-3">Credit Note</p>
-                  </a>
+                  <div class="d-flex">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="material-icons">credit_score</i>
+                      <p class="mb-0 fs-3">Credit Note</p>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
                 </div>
               </li>
@@ -157,15 +171,21 @@
                 </button>
 
                 <div class="dropdown-container" style="background-color: transparent; padding: 20px;justify-content: center; color: white;">
-                  <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                    <i class="material-icons">receipt_long</i>
-                    <p class="mb-0 fs-3">Bills</p>
-                  </a>
+                  <div class="d-flex">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="material-icons">receipt_long</i>
+                      <p class="mb-0 fs-3">Bills</p>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
-                  <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                    <i class="material-icons">payment</i>
-                    <p class="mb-0 fs-3">Debit Note</p>
-                  </a>
+                  <div class="d-flex">
+                    <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                      <i class="material-icons">payment</i>
+                      <p class="mb-0 fs-3">Debit Note</p>
+                    </a>
+                    <i class="fa fa-plus-circle plus_circle"></i>
+                  </div>
                   <hr>
                 </div>
               </li>
@@ -219,7 +239,7 @@
                       <div class="text-capitalize text-center" style="margin-top: 10%; margin-left: 1vh; color: white;">
                         <div>{{usr.employee.company.company_name}}</div>
                         <br>
-                        <div style="margin-top: -130%; font-size: medium;">{{usr.first_name}} {{usr.last_name}}</div>
+                        <div style="margin-top: -140%; font-size: medium;">{{usr.first_name}} {{usr.last_name}}</div>
                       </div>
                     </div>
                     {% endif %}

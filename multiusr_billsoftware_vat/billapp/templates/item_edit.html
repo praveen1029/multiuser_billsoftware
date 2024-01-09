@@ -208,11 +208,11 @@
                   <div class="p-3" style="border: 2px solid #68020F; border-radius: 2.5vh; background-color: #FFD6D7;">
                     <div class="mb-4 pt-4">
                       <label class="tb fw-bold" for="opn_stock_">STOCK IN HAND</label><br>
-                      <input id="opn_stock_" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" value="{{itm.itm_stock_in_hand}}" name="stock_in_hand" required>
+                      <input id="opn_stock_" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" value="{{itm.itm_stock_in_hand}}" name="stock_in_hand">
                     </div>
                     <div class="mb-4">
                       <label class="tb fw-bold" for="at_price">AT PRICE</label><br>
-                      <input id="at_price" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" value="{{itm.itm_at_price}}" name="at_price" required>
+                      <input id="at_price" class="form-control fw-normal fs-3 mt-1 input_border text-black" type="number" value="{{itm.itm_at_price}}" name="at_price">
                     </div>
                     <div class="mb-4">
                       <label class="tb fw-bold" for="date_">DATE</label><br>
@@ -286,6 +286,7 @@
           document.getElementById('unit_name').value = ''
           var dropdown = $('#unit');
           dropdown.append(`<option value='${response.unit_name}'>${response.unit_name}</option>`);
+          document.body.style.overflow = 'auto';
       },
     });
   });
